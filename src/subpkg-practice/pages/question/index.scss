@@ -1,0 +1,168 @@
+.question-page {
+  min-height: 100vh;
+  background: #f8fafc;
+  padding: 16px;
+  padding-bottom: 120px;
+}
+
+/* 题目区域 */
+.question-section {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+  border: 1px solid #e2e8f0;
+}
+
+.question-header {
+  margin-bottom: 12px;
+}
+
+.question-tag {
+  display: inline-block;
+  background: #3b82f6;
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+
+.tag-text {
+  font-size: 12px;
+  color: white;
+  font-weight: bold;
+}
+
+.question-text {
+  font-size: 16px;
+  color: #1e293b;
+  line-height: 1.6;
+  display: block;
+}
+
+/* 作答区域 */
+.answer-section {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  border: 1px solid #e2e8f0;
+  margin-bottom: 16px;
+}
+
+.answer-label {
+  font-size: 15px;
+  font-weight: bold;
+  color: #1e293b;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.answer-input {
+  width: 100%;
+  min-height: 200px;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+  font-size: 15px;
+  color: #1e293b;
+  line-height: 1.6;
+}
+
+.answer-count {
+  font-size: 12px;
+  color: #94a3b8;
+  display: block;
+  text-align: right;
+  margin-top: 8px;
+}
+
+/* 参考答案区域 */
+.reference-section {
+  background: #f0fdf4;
+  border-radius: 12px;
+  padding: 16px;
+  border: 1px solid #bbf7d0;
+  margin-bottom: 16px;
+}
+
+.reference-header {
+  margin-bottom: 12px;
+}
+
+.reference-label {
+  font-size: 15px;
+  font-weight: bold;
+  color: #166534;
+}
+
+.reference-text {
+  font-size: 15px;
+  color: #1e293b;
+  line-height: 1.7;
+  display: block;
+  white-space: pre-wrap;
+}
+
+/* 底部按钮 */
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 12px 16px;
+  padding-bottom: 32px;
+  background: white;
+  border-top: 1px solid #e2e8f0;
+}
+
+.btn-group {
+  display: flex;
+  gap: 12px;
+}
+
+.ref-btn {
+  flex: 1;
+  padding: 14px;
+  border-radius: 12px;
+  text-align: center;
+  background: #e2e8f0;
+  border: 1px solid #e2e8f0;
+}
+
+.ref-btn.active {
+  background: #dcfce7;
+  border-color: #86efac;
+}
+
+.ref-text {
+  font-size: 15px;
+  font-weight: bold;
+  color: #64748b;
+  display: block;
+}
+
+.ref-btn.active .ref-text {
+  color: #166534;
+}
+
+.submit-btn {
+  flex: 1;
+  padding: 14px;
+  border-radius: 12px;
+  text-align: center;
+  background: #e2e8f0;
+}
+
+.submit-btn.active {
+  background: #3b82f6;
+}
+
+.submit-text {
+  font-size: 15px;
+  font-weight: bold;
+  color: #94a3b8;
+  display: block;
+}
+
+.submit-btn.active .submit-text {
+  color: white;
+}

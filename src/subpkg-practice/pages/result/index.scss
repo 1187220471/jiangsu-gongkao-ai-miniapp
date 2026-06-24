@@ -1,0 +1,179 @@
+.result-page {
+  min-height: 100vh;
+  background: #f8fafc;
+  padding: 16px;
+  padding-bottom: 100px;
+}
+
+.loading-text {
+  font-size: 16px;
+  color: #64748b;
+  text-align: center;
+  padding: 40px;
+  display: block;
+}
+
+/* 总分 */
+.score-section {
+  text-align: center;
+  padding: 24px 0;
+  margin-bottom: 16px;
+}
+
+.score-circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 4px solid;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 8px;
+}
+
+.score-number {
+  font-size: 36px;
+  font-weight: bold;
+}
+
+.score-total {
+  font-size: 14px;
+  color: #94a3b8;
+}
+
+.score-level {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* 维度得分 */
+.dimensions-section {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+  border: 1px solid #e2e8f0;
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: bold;
+  color: #1e293b;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.dimension-item {
+  margin-bottom: 12px;
+}
+
+.dimension-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.dimension-name {
+  font-size: 14px;
+  color: #475569;
+}
+
+.dimension-score {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.dimension-bar-bg {
+  height: 6px;
+  background: #e2e8f0;
+  border-radius: 3px;
+  margin-bottom: 6px;
+}
+
+.dimension-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.3s;
+}
+
+.dimension-comment {
+  font-size: 12px;
+  color: #64748b;
+  display: block;
+}
+
+/* AI点评 */
+.evaluation-section {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+  border: 1px solid #e2e8f0;
+}
+
+.evaluation-card {
+  background: #f8fafc;
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.evaluation-text {
+  font-size: 14px;
+  color: #475569;
+  line-height: 1.6;
+  display: block;
+}
+
+/* 改进版答案 */
+.improved-section {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+  border: 1px solid #e2e8f0;
+}
+
+.improved-card {
+  background: #f0fdf4;
+  border-radius: 8px;
+  padding: 12px;
+  border: 1px solid #bbf7d0;
+}
+
+.improved-text {
+  font-size: 14px;
+  color: #166534;
+  line-height: 1.6;
+  display: block;
+}
+
+/* 底部按钮 */
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 16px;
+  padding-bottom: 32px;
+  background: white;
+  border-top: 1px solid #e2e8f0;
+}
+
+.action-btn {
+  padding: 14px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.action-btn.primary {
+  background: #3b82f6;
+}
+
+.action-text {
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  display: block;
+}

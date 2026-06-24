@@ -1,0 +1,151 @@
+.profile {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  padding: 40px 30px;
+
+  .header {
+    text-align: center;
+    margin-bottom: 40px;
+
+    .title {
+      font-size: 40px;
+      font-weight: bold;
+      color: #ffffff;
+    }
+  }
+
+  .card {
+    background: #ffffff;
+    border-radius: 24px;
+    padding: 40px;
+    margin-bottom: 30px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  }
+
+  .user-card {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+
+    .avatar {
+      width: 120px;
+      height: 120px;
+      background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+
+      .avatar-text {
+        font-size: 60px;
+      }
+    }
+
+    .user-info {
+      flex: 1;
+      text-align: left;
+
+      .nickname {
+        font-size: 40px;
+        font-weight: bold;
+        color: #1f2937;
+        margin-bottom: 12px;
+      }
+
+      .username {
+        font-size: 26px;
+        color: #6b7280;
+      }
+    }
+  }
+
+  .bind-card {
+    text-align: left;
+
+    .card-title {
+      font-size: 34px;
+      font-weight: bold;
+      color: #1f2937;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .card-desc {
+      font-size: 26px;
+      color: #6b7280;
+      margin-bottom: 30px;
+      display: block;
+      line-height: 1.6;
+    }
+
+    .bind-input {
+      width: 100%;
+      height: 90px;
+      background: #f3f4f6;
+      border-radius: 16px;
+      padding: 0 30px;
+      font-size: 32px;
+      color: #1f2937;
+      box-sizing: border-box;
+      margin-bottom: 24px;
+    }
+
+    .bind-btn {
+      width: 100%;
+      height: 90px;
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: #ffffff;
+      border-radius: 16px;
+      font-size: 32px;
+      font-weight: bold;
+      line-height: 90px;
+      border: none;
+    }
+
+    .error-text {
+      display: block;
+      font-size: 26px;
+      color: #ef4444;
+      margin-top: 20px;
+    }
+
+    .success-text {
+      display: block;
+      font-size: 26px;
+      color: #10b981;
+      margin-top: 20px;
+      line-height: 1.5;
+    }
+  }
+
+  .login-btn,
+  .logout-btn {
+    width: 100%;
+    height: 100px;
+    border-radius: 24px;
+    font-size: 34px;
+    font-weight: bold;
+    line-height: 100px;
+    border: none;
+  }
+
+  .login-btn {
+    background: #ffffff;
+    color: #059669;
+  }
+
+  .logout-btn {
+    background: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+  }
+
+  .loading {
+    padding: 60px 0;
+
+    text {
+      font-size: 32px;
+      color: #ffffff;
+    }
+  }
+}

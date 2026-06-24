@@ -1,0 +1,160 @@
+.interview {
+  min-height: 100vh;
+  background: #f8fafc;
+  padding: 20px;
+  padding-bottom: 40px;
+}
+
+/* Header */
+.header {
+  text-align: center;
+  margin-bottom: 24px;
+  padding: 16px 0;
+}
+
+.header-icon-bg {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.header-icon-text {
+  font-size: 14px;
+  font-weight: bold;
+  color: white;
+}
+
+.header-title {
+  font-size: 22px;
+  font-weight: bold;
+  color: #1e293b;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.header-subtitle {
+  font-size: 14px;
+  color: #64748b;
+  display: block;
+}
+
+/* 功能卡片列表 */
+.sections {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.section-card {
+  border-radius: 16px;
+  padding: 16px;
+  position: relative;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.card-icon-bg {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-icon-text {
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.card-badge {
+  padding: 4px 10px;
+  border-radius: 10px;
+  border: 1px solid;
+}
+
+.badge-text {
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.card-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #1e293b;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.card-subtitle {
+  font-size: 13px;
+  color: #64748b;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.card-features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.feature-tag {
+  padding: 4px 10px;
+  border-radius: 8px;
+}
+
+.feature-text {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* 支持的题型 */
+.types-section {
+  background: white;
+  border-radius: 16px;
+  padding: 16px;
+  border: 1px solid #e2e8f0;
+}
+
+.types-title {
+  font-size: 15px;
+  font-weight: bold;
+  color: #1e293b;
+  display: block;
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.types-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.type-tag {
+  background: #f1f5f9;
+  border-radius: 8px;
+  padding: 6px 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.type-text {
+  font-size: 12px;
+  color: #475569;
+}

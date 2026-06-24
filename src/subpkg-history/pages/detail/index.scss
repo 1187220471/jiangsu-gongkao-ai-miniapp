@@ -1,0 +1,111 @@
+.history-detail-page {
+  min-height: 100vh;
+  background: #f8fafc;
+  padding: 12px 12px 120px;
+
+  .loading-text {
+    display: block;
+    text-align: center;
+    padding: 40px;
+    color: #94a3b8;
+    font-size: 14px;
+  }
+
+  .question-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+
+    .question-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+
+      .question-type {
+        font-size: 12px;
+        font-weight: 600;
+        color: #3b82f6;
+        background: #eff6ff;
+        padding: 3px 10px;
+        border-radius: 10px;
+      }
+
+      .question-score {
+        font-size: 14px;
+        font-weight: 700;
+      }
+    }
+
+    .question-text {
+      font-size: 15px;
+      color: #334155;
+      line-height: 1.6;
+    }
+  }
+
+  .section-title {
+    display: block;
+    font-size: 15px;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 10px;
+  }
+
+  .answer-section,
+  .evaluation-section,
+  .improved-section,
+  .reference-section {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+
+    .answer-card,
+    .evaluation-card,
+    .improved-card,
+    .reference-card {
+      .answer-text,
+      .evaluation-text,
+      .improved-text,
+      .reference-text {
+        font-size: 14px;
+        color: #475569;
+        line-height: 1.8;
+      }
+    }
+  }
+
+  .improved-section {
+    background: #eff6ff;
+    border: 1px solid #dbeafe;
+  }
+
+  .reference-section {
+    background: #f0fdf4;
+    border: 1px solid #dcfce7;
+  }
+
+  .footer {
+    padding: 20px 0;
+
+    .action-btn {
+      border-radius: 12px;
+      padding: 14px 0;
+      text-align: center;
+
+      &.primary {
+        background: #3b82f6;
+      }
+
+      .action-text {
+        font-size: 16px;
+        font-weight: 600;
+        color: #ffffff;
+      }
+    }
+  }
+}

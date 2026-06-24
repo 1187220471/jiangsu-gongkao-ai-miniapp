@@ -1,0 +1,127 @@
+.index {
+  min-height: 100vh;
+  background: #f5f5f5;
+  padding: 20px;
+}
+
+.header {
+  text-align: center;
+  padding: 30px 0;
+}
+
+.title {
+  font-size: 22px;
+  font-weight: bold;
+  color: #1f2937;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: #6b7280;
+  display: block;
+}
+
+.login-section {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.login-tip {
+  font-size: 14px;
+  color: #6b7280;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.login-btn {
+  background: #3b82f6;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 16px;
+}
+
+.user-section {
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.welcome {
+  font-size: 16px;
+  color: #1f2937;
+}
+
+.logout {
+  font-size: 14px;
+  color: #ef4444;
+}
+
+.modules {
+  margin-bottom: 20px;
+}
+
+.module-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  border-left: 4px solid;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.module-icon {
+  font-size: 32px;
+  margin-right: 16px;
+}
+
+.module-info {
+  flex: 1;
+}
+
+.module-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #1f2937;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.module-subtitle {
+  font-size: 13px;
+  color: #6b7280;
+  display: block;
+}
+
+.module-arrow {
+  font-size: 20px;
+  color: #9ca3af;
+}
+
+.footer {
+  text-align: center;
+  padding: 20px 0;
+}
+
+.footer-text {
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+.loading {
+  text-align: center;
+  padding: 40px;
+  color: #6b7280;
+}

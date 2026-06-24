@@ -1,0 +1,143 @@
+.custom-page {
+  min-height: 100vh;
+  background: #f8fafc;
+  padding: 12px 12px 120px;
+
+  .section-title {
+    display: block;
+    font-size: 15px;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 10px;
+  }
+
+  .input-section {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+
+    .custom-input {
+      width: 100%;
+      min-height: 120px;
+      padding: 12px;
+      border-radius: 12px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      font-size: 14px;
+      color: #334155;
+      line-height: 1.6;
+      box-sizing: border-box;
+    }
+
+    .input-count {
+      display: block;
+      text-align: right;
+      font-size: 12px;
+      color: #94a3b8;
+      margin-top: 8px;
+    }
+  }
+
+  .btn-wrap {
+    padding: 0 0 12px;
+
+    .primary-btn {
+      background: #3b82f6;
+      border-radius: 12px;
+      padding: 14px 0;
+      text-align: center;
+
+      &:active {
+        opacity: 0.9;
+      }
+
+      .btn-text {
+        font-size: 16px;
+        font-weight: 600;
+        color: #ffffff;
+      }
+    }
+  }
+
+  .reference-section {
+    background: #f0fdf4;
+    border: 1px solid #dcfce7;
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 12px;
+
+    .reference-card {
+      .reference-text {
+        font-size: 14px;
+        color: #475569;
+        line-height: 1.8;
+      }
+    }
+  }
+
+  .result-section {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 16px;
+    margin-top: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+
+    .score-line {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 12px;
+
+      .score-label {
+        font-size: 14px;
+        color: #64748b;
+      }
+
+      .score-number {
+        font-size: 28px;
+        font-weight: 700;
+      }
+
+      .score-total {
+        font-size: 14px;
+        color: #94a3b8;
+      }
+
+      .score-level {
+        font-size: 13px;
+        font-weight: 600;
+        margin-left: auto;
+      }
+    }
+
+    .result-card {
+      background: #f8fafc;
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 12px;
+
+      .result-text {
+        font-size: 14px;
+        color: #475569;
+        line-height: 1.8;
+      }
+    }
+
+    .improved-section {
+      .improved-card {
+        background: #eff6ff;
+        border: 1px solid #dbeafe;
+        border-radius: 12px;
+        padding: 12px;
+
+        .improved-text {
+          font-size: 14px;
+          color: #475569;
+          line-height: 1.8;
+        }
+      }
+    }
+  }
+}
