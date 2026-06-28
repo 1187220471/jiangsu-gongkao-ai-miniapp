@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, Textarea } from '@tarojs/components'
 import Taro, { useRouter } from '@tarojs/taro'
 import { useState, useEffect } from 'react'
+import VoiceInput from '../../../components/VoiceInput'
 import './index.scss'
 
 interface ZhentiDetail {
@@ -177,13 +178,20 @@ export default function ZhentiDetail() {
         </View>
         <Textarea
           className='answer-input'
-          placeholder='请在此输入你的作答内容，或直接查看下方参考答案...'
+          placeholder='请在此输入你的作答内容，或使用下方语音输入...'
           value={userAnswer}
           onInput={(e) => setUserAnswer(e.detail.value)}
           maxlength={2000}
           autoHeight
         />
         <Text className='answer-count'>{userAnswer.length}/2000</Text>
+
+        {/* 语音输入 */}
+        <VoiceInput
+          value={userAnswer}
+          onTextChange={setUserAnswer}
+          placeholder='按住 说话'
+        />
 
         {result && (
           <View className='result-wrap'>
@@ -282,12 +290,12 @@ export default function ZhentiDetail() {
               { id: 2, content: question.answer2 },
               { id: 3, content: question.answer3 },
             ].map((a) => (
-              expandedAnswer === a.id && (
+              expandedAnswer === a.id ? (
                 <View key={a.id} className='answer-detail'>
                   <Text className='answer-detail-title'>答案 {a.id} 原文</Text>
                   <Text className='answer-detail-text'>{a.content}</Text>
                 </View>
-              )
+              ) : null
             ))}
           </View>
         )}

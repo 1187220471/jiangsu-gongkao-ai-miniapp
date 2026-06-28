@@ -8,20 +8,20 @@
 /* Header */
 .header {
   text-align: center;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
   padding: 16px 0;
 }
 
 .header-icon-bg {
-  width: 56px;
-  height: 56px;
-  border-radius: 16px;
+  width: 64px;
+  height: 64px;
+  border-radius: 20px;
   background: linear-gradient(135deg, #3b82f6, #2563eb);
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0 auto 12px;
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.3);
 }
 
 .header-icon-text {
@@ -31,7 +31,7 @@
 }
 
 .header-title {
-  font-size: 22px;
+  font-size: 24px;
   font-weight: bold;
   color: #1e293b;
   display: block;
@@ -44,83 +44,182 @@
   display: block;
 }
 
-/* 功能卡片列表 */
-.sections {
+/* 统计数据栏 */
+.stats-bar {
   display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-bottom: 24px;
-}
-
-.section-card {
+  justify-content: space-around;
+  background: white;
   border-radius: 16px;
   padding: 16px;
-  position: relative;
-  border: 1px solid rgba(0, 0, 0, 0.04);
+  margin-bottom: 16px;
+  border: 1px solid #e2e8f0;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
-.card-header {
+.stat-item {
+  text-align: center;
+  flex: 1;
+  position: relative;
+
+  &:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1px;
+    height: 60%;
+    background: #e2e8f0;
+  }
+}
+
+.stat-num {
+  font-size: 22px;
+  font-weight: bold;
+  color: #3b82f6;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.stat-label {
+  font-size: 13px;
+  color: #1e293b;
+  font-weight: 500;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.stat-desc {
+  font-size: 11px;
+  color: #94a3b8;
+  display: block;
+}
+
+/* 卡片网格 */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.grid-card {
+  border-radius: 14px;
+  padding: 14px;
+  position: relative;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  min-height: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  &:active {
+    opacity: 0.85;
+    transform: scale(0.98);
+  }
+}
+
+.grid-card-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 }
 
-.card-icon-bg {
-  width: 40px;
-  height: 40px;
+.grid-icon-bg {
+  width: 36px;
+  height: 36px;
   border-radius: 10px;
+  background: rgba(255, 255, 255, 0.25);
   display: flex;
   align-items: center;
   justify-content: center;
+  backdrop-filter: blur(4px);
 }
 
-.card-icon-text {
-  font-size: 13px;
+.grid-icon-text {
+  font-size: 12px;
   font-weight: bold;
+  color: white;
 }
 
-.card-badge {
-  padding: 4px 10px;
+.grid-badge {
+  padding: 3px 8px;
   border-radius: 10px;
-  border: 1px solid;
+  background: rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.35);
 }
 
-.badge-text {
-  font-size: 11px;
-  font-weight: 500;
+.grid-badge-text {
+  font-size: 10px;
+  font-weight: 600;
+  color: white;
 }
 
-.card-title {
-  font-size: 18px;
+.grid-card-title {
+  font-size: 15px;
   font-weight: bold;
-  color: #1e293b;
+  color: white;
   display: block;
   margin-bottom: 4px;
 }
 
-.card-subtitle {
-  font-size: 13px;
-  color: #64748b;
-  display: block;
-  margin-bottom: 12px;
-}
-
-.card-features {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
-.feature-tag {
-  padding: 4px 10px;
-  border-radius: 8px;
-}
-
-.feature-text {
+.grid-card-subtitle {
   font-size: 12px;
-  font-weight: 500;
+  color: rgba(255, 255, 255, 0.85);
+  display: block;
+}
+
+/* 功能特性 */
+.features-section {
+  background: white;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 16px;
+  border: 1px solid #e2e8f0;
+}
+
+.features-title {
+  font-size: 15px;
+  font-weight: bold;
+  color: #1e293b;
+  display: block;
+  text-align: center;
+  margin-bottom: 14px;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.feature-item {
+  background: #f8fafc;
+  border-radius: 12px;
+  padding: 14px;
+  text-align: center;
+  border: 1px solid #e2e8f0;
+
+  .feature-icon {
+    font-size: 28px;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .feature-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: #1e293b;
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  .feature-desc {
+    font-size: 12px;
+    color: #94a3b8;
+    display: block;
+  }
 }
 
 /* 支持的题型 */
@@ -148,13 +247,14 @@
 }
 
 .type-tag {
-  background: #f1f5f9;
+  background: #eff6ff;
   border-radius: 8px;
   padding: 6px 12px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #bfdbfe;
 }
 
 .type-text {
   font-size: 12px;
-  color: #475569;
+  color: #2563eb;
+  font-weight: 500;
 }

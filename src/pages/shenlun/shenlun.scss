@@ -1,4 +1,246 @@
 .shenlun {
+  min-height: 100vh;
+  background: #f8fafc;
   padding: 20px;
+  padding-bottom: 40px;
+}
+
+/* Header - 与面试页风格一致 */
+.header {
   text-align: center;
+  margin-bottom: 20px;
+  padding: 16px 0;
+}
+
+.header-icon-bg {
+  width: 64px;
+  height: 64px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #10b981, #059669);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px;
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);
+}
+
+.header-icon-text {
+  font-size: 14px;
+  font-weight: bold;
+  color: white;
+}
+
+.header-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #1e293b;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.header-subtitle {
+  font-size: 14px;
+  color: #64748b;
+  display: block;
+}
+
+/* 统计数据栏 */
+.stats-bar {
+  display: flex;
+  justify-content: space-around;
+  background: white;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 16px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.stat-item {
+  text-align: center;
+  flex: 1;
+  position: relative;
+
+  &:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1px;
+    height: 60%;
+    background: #e2e8f0;
+  }
+}
+
+.stat-num {
+  font-size: 22px;
+  font-weight: bold;
+  color: #10b981;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.stat-label {
+  font-size: 13px;
+  color: #1e293b;
+  font-weight: 500;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.stat-desc {
+  font-size: 11px;
+  color: #94a3b8;
+  display: block;
+}
+
+/* 主入口卡片 */
+.main-card {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  border-radius: 18px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  box-shadow: 0 6px 18px rgba(16, 185, 129, 0.25);
+
+  &:active {
+    opacity: 0.85;
+    transform: scale(0.98);
+  }
+}
+
+.main-card-content {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+}
+
+.main-card-icon-bg {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+}
+
+.main-card-icon {
+  font-size: 24px;
+}
+
+.main-card-info {
+  .main-card-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .main-card-subtitle {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.85);
+    display: block;
+  }
+}
+
+.main-card-arrow {
+  font-size: 20px;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: bold;
+}
+
+/* 功能特性 */
+.features-section {
+  background: white;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 16px;
+  border: 1px solid #e2e8f0;
+}
+
+.features-title {
+  font-size: 15px;
+  font-weight: bold;
+  color: #1e293b;
+  display: block;
+  text-align: center;
+  margin-bottom: 14px;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.feature-item {
+  background: #f8fafc;
+  border-radius: 12px;
+  padding: 14px;
+  text-align: center;
+  border: 1px solid #e2e8f0;
+
+  .feature-icon {
+    font-size: 28px;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .feature-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: #1e293b;
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  .feature-desc {
+    font-size: 12px;
+    color: #94a3b8;
+    display: block;
+  }
+}
+
+/* 题型说明 */
+.types-section {
+  background: white;
+  border-radius: 16px;
+  padding: 16px;
+  border: 1px solid #e2e8f0;
+}
+
+.types-title {
+  font-size: 15px;
+  font-weight: bold;
+  color: #1e293b;
+  display: block;
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.types-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.type-tag {
+  background: #f0fdf4;
+  border-radius: 8px;
+  padding: 6px 12px;
+  border: 1px solid #bbf7d0;
+}
+
+.type-text {
+  font-size: 12px;
+  color: #059669;
+  font-weight: 500;
 }
