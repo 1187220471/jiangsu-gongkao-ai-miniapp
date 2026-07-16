@@ -1,8 +1,8 @@
 {
-  "name": "js-gongkao-miniapp",
+  "name": "shenmian-assistant",
   "version": "1.0.0",
   "private": true,
-  "description": "江苏公考AI训练小程序",
+  "description": "申面智能小助手",
   "templateInfo": {
     "name": "default",
     "typescript": true,

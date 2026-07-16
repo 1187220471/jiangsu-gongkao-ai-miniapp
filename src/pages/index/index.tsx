@@ -131,7 +131,7 @@ export default function Index() {
         {/* 顶部横幅 */}
         <View className='hero-banner'>
           <View className='hero-content'>
-            <Text className='hero-title'>江苏公考AI智能训练平台</Text>
+            <Text className='hero-title'>申面智能小助手</Text>
             <Text className='hero-subtitle'>面试 · 申论 · 时政 智能训练平台</Text>
           </View>
           
@@ -202,7 +202,7 @@ export default function Index() {
 
         {/* 底部信息 */}
         <View className='footer'>
-          <Text className='footer-text'>江苏公考AI · 助你上岸</Text>
+          <Text className='footer-text'>申面智能小助手 · 助你上岸</Text>
         </View>
       </View>
     </AuthContext.Provider>

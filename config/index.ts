@@ -6,7 +6,7 @@ import prodConfig from './prod'
 // https://taro-docs.jd.com/docs/next/config#defineconfig-辅助函数
 export default defineConfig<'webpack5'>(async (merge, { command, mode }) => {
   const baseConfig: UserConfigExport<'webpack5'> = {
-    projectName: 'js-gongkao-miniapp',
+    projectName: 'shenmian-assistant',
     date: '2026-6-23',
     designWidth: 375,
     deviceRatio: {

@@ -1,7 +1,7 @@
 {
   "miniprogramRoot": "dist/",
-  "projectname": "js-gongkao-miniapp",
-  "description": "江苏公考AI训练小程序",
+  "projectname": "shenmian-assistant",
+  "description": "申面智能小助手",
   "appid": "wxc080dddfc5b7cda2",
   "setting": {
     "urlCheck": true,

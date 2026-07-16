@@ -73,7 +73,7 @@ export default defineAppConfig({
   window: {
     backgroundTextStyle: 'light',
     navigationBarBackgroundColor: '#fff',
-    navigationBarTitleText: '江苏公考AI',
+    navigationBarTitleText: '申面智能小助手',
     navigationBarTextStyle: 'black',
   },
 })
