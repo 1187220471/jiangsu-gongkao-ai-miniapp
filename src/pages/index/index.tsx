@@ -6,7 +6,7 @@ import iconMicrophone from '../../assets/icons/microphone.png'
 import iconScroll from '../../assets/icons/scroll.png'
 import iconNewspaper from '../../assets/icons/newspaper.png'
 import iconClock from '../../assets/icons/clock.png'
-import turtleMascot from '../../assets/images/turtle-mascot-120.png'
+import pandaMascot from '../../assets/images/panda-mascot-120.png'
 
 // 全局登录状态
 interface AuthContextType {
@@ -178,31 +178,27 @@ export default function Index() {
             )}
           </View>
 
-          <View className='hero-mascot-area'>
-            <Image className='hero-mascot' src={turtleMascot} mode='aspectFit' />
-            <Text className='hero-mascot-streak'>连续打卡 1 天</Text>
+          <View className='hero-body'>
+            <Image className='hero-mascot' src={pandaMascot} mode='aspectFit' />
+            <View className='hero-info'>
+              <View className='streak-badge'>
+                <Text className='streak-text'>连续打卡 1 天</Text>
+              </View>
+              <View className='hero-stats-row'>
+                <View className='hero-stat-mini'>
+                  <Text className='hero-stat-num'>0</Text>
+                  <Text className='hero-stat-label'>今日练习</Text>
+                </View>
+                <View className='hero-stat-mini'>
+                  <Text className='hero-stat-num'>0%</Text>
+                  <Text className='hero-stat-label'>今日目标</Text>
+                </View>
+              </View>
+            </View>
           </View>
 
-          <View className='today-stats'>
-            <View className='today-stat'>
-              <Text className='today-stat-num'>0</Text>
-              <Text className='today-stat-label'>今日练习</Text>
-            </View>
-            <View className='today-stat'>
-              <Text className='today-stat-num'>1</Text>
-              <Text className='today-stat-label'>连续打卡</Text>
-            </View>
-          </View>
-
-          <View className='progress-area'>
-            <View className='progress-labels'>
-              <Text className='progress-title'>今日目标</Text>
-              <Text className='progress-value'>0%</Text>
-            </View>
-            <View className='progress-track'>
-              <View className='progress-fill' style={{ width: '0%' }} />
-            </View>
-            <Text className='progress-hint'>完成 1 道练习即可达成目标</Text>
+          <View className='progress-track'>
+            <View className='progress-fill' style={{ width: '0%' }} />
           </View>
 
           <Button className='start-btn' onClick={handleStartPractice}>

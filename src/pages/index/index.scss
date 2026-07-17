@@ -9,7 +9,7 @@
 .hero-card {
   background: #ffffff;
   border-radius: 20px;
-  padding: 22px 18px;
+  padding: 18px 16px;
   margin-bottom: 16px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
 }
@@ -18,7 +18,7 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 20px;
+  margin-bottom: 14px;
 }
 
 .hero-title {
@@ -61,104 +61,87 @@
 }
 
 /* Hero mascot */
-.hero-mascot-area {
+.hero-body {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  margin-bottom: 20px;
+  gap: 16px;
+  margin-bottom: 14px;
 }
 
 .hero-mascot {
-  width: 120px;
-  height: 120px;
+  width: 100px;
+  height: 100px;
   image-rendering: pixelated;
   display: block;
-  margin-bottom: 8px;
+  flex-shrink: 0;
 }
 
-.hero-mascot-streak {
-  font-size: 12px;
-  color: #9ca3af;
-  display: block;
-  margin-top: 8px;
-}
-
-/* 今日数据 */
-.today-stats {
-  display: flex;
-  gap: 24px;
-  margin-bottom: 20px;
-}
-
-.today-stat {
+.hero-info {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 10px;
+  flex: 1;
 }
 
-.today-stat-num {
-  font-size: 32px;
+.streak-badge {
+  align-self: flex-start;
+  background: #fff7ed;
+  border-radius: 20px;
+  padding: 6px 12px;
+}
+
+.streak-text {
+  font-size: 12px;
+  color: #c2410c;
+  font-weight: 600;
+}
+
+.hero-stats-row {
+  display: flex;
+  gap: 20px;
+}
+
+.hero-stat-mini {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.hero-stat-mini .hero-stat-num {
+  font-size: 22px;
   font-weight: 700;
   color: #111827;
   line-height: 1;
 }
 
-.today-stat-label {
+.hero-stat-mini .hero-stat-label {
   font-size: 12px;
   color: #9ca3af;
 }
 
-/* 进度条 */
-.progress-area {
-  margin-bottom: 20px;
-}
-
-.progress-labels {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
-}
-
-.progress-title {
-  font-size: 14px;
-  color: #374151;
-  font-weight: 500;
-}
-
-.progress-value {
-  font-size: 13px;
-  color: #2563eb;
-  font-weight: 600;
-}
-
+/* Progress */
 .progress-track {
-  height: 8px;
+  height: 6px;
   background: #f3f4f6;
-  border-radius: 4px;
+  border-radius: 3px;
   overflow: hidden;
-  margin-bottom: 8px;
+  margin-bottom: 14px;
 }
 
 .progress-fill {
   height: 100%;
   background: linear-gradient(90deg, #3b82f6, #60a5fa);
-  border-radius: 4px;
+  border-radius: 3px;
   transition: width 0.3s ease;
 }
 
-.progress-hint {
-  font-size: 12px;
-  color: #9ca3af;
-}
-
-/* 主按钮 */
+/* Main button */
 .start-btn {
   background: #111827;
   color: #ffffff;
   font-size: 16px;
   font-weight: 600;
-  padding: 14px 0;
+  padding: 12px 0;
   border-radius: 14px;
   border: none;
   width: 100%;
