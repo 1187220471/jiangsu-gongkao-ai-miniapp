@@ -1,46 +1,29 @@
 .shenlun {
   min-height: 100vh;
-  background: #f8fafc;
-  padding: 20px;
+  background: #f5f5f5;
+  padding: 16px;
   padding-bottom: 40px;
 }
 
-/* Header - 与面试页风格一致 */
+/* Header */
 .header {
   text-align: center;
-  margin-bottom: 20px;
-  padding: 16px 0;
-}
-
-.header-icon-bg {
-  width: 64px;
-  height: 64px;
-  border-radius: 20px;
-  background: #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 12px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
-}
-
-.header-icon-text {
-  font-size: 14px;
-  font-weight: bold;
-  color: #111827;
+  margin-bottom: 16px;
+  padding: 8px 0 4px;
 }
 
 .header-title {
   font-size: 24px;
-  font-weight: bold;
+  font-weight: 700;
   color: #111827;
   display: block;
   margin-bottom: 4px;
+  letter-spacing: 0.5px;
 }
 
 .header-subtitle {
-  font-size: 14px;
-  color: #6b7280;
+  font-size: 13px;
+  color: #9ca3af;
   display: block;
 }
 
@@ -52,7 +35,7 @@
   border-radius: 16px;
   padding: 16px;
   margin-bottom: 16px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
 }
 
 .stat-item {
@@ -74,7 +57,7 @@
 
 .stat-num {
   font-size: 22px;
-  font-weight: bold;
+  font-weight: 700;
   color: #111827;
   display: block;
   margin-bottom: 2px;
@@ -94,16 +77,34 @@
   display: block;
 }
 
-/* 主入口卡片 */
-.main-card {
+/* 区块标题 */
+.section-title-row {
+  padding-left: 4px;
+  margin-bottom: 12px;
+}
+
+.section-title-text {
+  font-size: 16px;
+  font-weight: 700;
+  color: #111827;
+}
+
+/* 训练模块网格（首页样式） */
+.modules-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.module-card {
   background: #ffffff;
-  border-radius: 18px;
-  padding: 20px;
+  border-radius: 16px;
+  padding: 14px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-bottom: 16px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+  gap: 12px;
 
   &:active {
     opacity: 0.85;
@@ -111,48 +112,58 @@
   }
 }
 
-.main-card-content {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  flex: 1;
-}
-
-.main-card-icon-bg {
-  width: 48px;
-  height: 48px;
+.module-icon {
+  width: 56px;
+  height: 56px;
   border-radius: 14px;
-  background: rgba(0, 0, 0, 0.06);
   display: flex;
   align-items: center;
   justify-content: center;
-  backdrop-filter: blur(4px);
+  flex-shrink: 0;
 }
 
-.main-card-icon {
-  font-size: 24px;
+.module-icon-img {
+  width: 40px;
+  height: 40px;
+  image-rendering: pixelated;
+  display: block;
 }
 
-.main-card-info {
-  .main-card-title {
-    font-size: 18px;
-    font-weight: bold;
-    color: #111827;
-    display: block;
-    margin-bottom: 4px;
-  }
-
-  .main-card-subtitle {
-    font-size: 13px;
-    color: #6b7280;
-    display: block;
-  }
+.module-card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
 }
 
-.main-card-arrow {
-  font-size: 20px;
-  color: #9ca3af;
-  font-weight: bold;
+.module-card-title-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.module-card-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.module-card-badge {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 10px;
+  padding: 2px 8px;
+}
+
+.module-card-badge-text {
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.module-card-subtitle {
+  font-size: 12px;
+  display: block;
 }
 
 /* 功能特性 */
@@ -161,11 +172,11 @@
   border-radius: 16px;
   padding: 16px;
   margin-bottom: 16px;
-  }
+}
 
 .features-title {
   font-size: 15px;
-  font-weight: bold;
+  font-weight: 700;
   color: #111827;
   display: block;
   text-align: center;
@@ -179,10 +190,11 @@
 }
 
 .feature-item {
-  background: #f8fafc;
+  background: #f5f5f5;
   border-radius: 12px;
   padding: 14px;
   text-align: center;
+
   .feature-icon {
     font-size: 28px;
     display: block;
@@ -209,11 +221,11 @@
   background: white;
   border-radius: 16px;
   padding: 16px;
-  }
+}
 
 .types-title {
   font-size: 15px;
-  font-weight: bold;
+  font-weight: 700;
   color: #111827;
   display: block;
   text-align: center;
@@ -231,7 +243,7 @@
   background: #f3f4f6;
   border-radius: 8px;
   padding: 6px 12px;
-  }
+}
 
 .type-text {
   font-size: 12px;

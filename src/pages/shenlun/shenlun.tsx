@@ -1,6 +1,7 @@
-import { View, Text } from '@tarojs/components'
+import { View, Text, Image } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import './shenlun.scss'
+import iconScroll from '../../assets/icons/scroll.png'
 
 export default function Shenlun() {
   const handleNavigate = () => {
@@ -9,14 +10,14 @@ export default function Shenlun() {
 
   const stats = [
     { num: '8', label: '年真题', desc: '2018-2025' },
-    { num: '24', label: '套试卷', desc: 'A/B/C卷' },
+    { num: '24', label: '套试卷', desc: 'A/B/C 卷' },
     { num: '97', label: '道题目', desc: '含材料分析' },
   ]
 
   const features = [
     { icon: '📝', title: '真题练习', desc: '历年真题逐题训练' },
     { icon: '📷', title: '拍照识别', desc: '手写答案一键录入' },
-    { icon: '🤖', title: 'AI批改', desc: '智能评分逐句点评' },
+    { icon: '🤖', title: 'AI 批改', desc: '智能评分逐句点评' },
     { icon: '📊', title: '维度分析', desc: '多维度能力评估' },
   ]
 
@@ -24,11 +25,8 @@ export default function Shenlun() {
     <View className='shenlun'>
       {/* 头部 */}
       <View className='header'>
-        <View className='header-icon-bg'>
-          <Text className='header-icon-text'>申论</Text>
-        </View>
         <Text className='header-title'>申论真题训练</Text>
-        <Text className='header-subtitle'>材料分析 · 拍照识别 · AI智能批改</Text>
+        <Text className='header-subtitle'>材料分析 · 拍照识别 · AI 智能批改</Text>
       </View>
 
       {/* 统计数据 */}
@@ -42,18 +40,25 @@ export default function Shenlun() {
         ))}
       </View>
 
-      {/* 主入口卡片 */}
-      <View className='main-card' onClick={handleNavigate}>
-        <View className='main-card-content'>
-          <View className='main-card-icon-bg'>
-            <Text className='main-card-icon'>📚</Text>
+      {/* 训练模块（首页样式） */}
+      <View className='section-title-row'>
+        <Text className='section-title-text'>训练模块</Text>
+      </View>
+      <View className='modules-grid'>
+        <View className='module-card' onClick={handleNavigate}>
+          <View className='module-icon' style={{ background: '#eef8f2' }}>
+            <Image className='module-icon-img' src={iconScroll} mode='aspectFit' />
           </View>
-          <View className='main-card-info'>
-            <Text className='main-card-title'>进入真题训练</Text>
-            <Text className='main-card-subtitle'>按年份、种类、题型筛选练习</Text>
+          <View className='module-card-info'>
+            <View className='module-card-title-row'>
+              <Text className='module-card-title'>进入真题训练</Text>
+              <View className='module-card-badge'>
+                <Text className='module-card-badge-text' style={{ color: '#4a5560' }}>97 题</Text>
+              </View>
+            </View>
+            <Text className='module-card-subtitle' style={{ color: '#4a5560' }}>按年份、种类、题型筛选练习</Text>
           </View>
         </View>
-        <View className='main-card-arrow'>→</View>
       </View>
 
       {/* 功能特性 */}
