@@ -6,6 +6,7 @@ import iconMicrophone from '../../assets/icons/microphone.png'
 import iconScroll from '../../assets/icons/scroll.png'
 import iconNewspaper from '../../assets/icons/newspaper.png'
 import iconClock from '../../assets/icons/clock.png'
+import turtleMascot from '../../assets/images/turtle-mascot-120.png'
 
 // 全局登录状态
 interface AuthContextType {
@@ -175,6 +176,12 @@ export default function Index() {
                 <Text className='user-pill-text'>{user?.nickname || user?.username || '我'}</Text>
               </View>
             )}
+          </View>
+
+          <View className='hero-mascot-area'>
+            <Image className='hero-mascot' src={turtleMascot} mode='aspectFit' />
+            <Text className='hero-mascot-name'>小龟</Text>
+            <Text className='hero-mascot-level'>Lv.1 · 连续打卡 1 天</Text>
           </View>
 
           <View className='today-stats'>
