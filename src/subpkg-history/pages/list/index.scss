@@ -6,9 +6,7 @@
 
   .header {
     padding: 40px 20px 24px;
-    background: linear-gradient(135deg, #64748b 0%, #475569 100%);
-
-    .header-title {
+    background: #ffffff;.header-title {
       font-size: 22px;
       font-weight: 700;
       color: #ffffff;
@@ -16,7 +14,7 @@
 
     .header-subtitle {
       font-size: 13px;
-      color: rgba(255, 255, 255, 0.85);
+      color: #6b7280;
       margin-top: 4px;
     }
   }
@@ -36,14 +34,14 @@
       .empty-text {
         display: block;
         font-size: 16px;
-        color: #64748b;
+        color: #6b7280;
         margin-top: 12px;
       }
 
       .empty-tip {
         display: block;
         font-size: 13px;
-        color: #94a3b8;
+        color: #9ca3af;
         margin-top: 6px;
       }
     }
@@ -69,15 +67,15 @@
           .record-type {
             font-size: 12px;
             font-weight: 600;
-            color: #3b82f6;
-            background: #eff6ff;
+            color: #111827;
+            background: #f3f4f6;
             padding: 3px 10px;
             border-radius: 10px;
           }
 
           .record-date {
             font-size: 12px;
-            color: #94a3b8;
+            color: #9ca3af;
           }
         }
 
@@ -97,11 +95,11 @@
           align-items: center;
           margin-top: 12px;
           padding-top: 12px;
-          border-top: 1px solid #f1f5f9;
+          border-top: 1px solid #f3f4f6;
 
           .record-answer-count {
             font-size: 12px;
-            color: #94a3b8;
+            color: #9ca3af;
           }
 
           .record-score {
@@ -122,9 +120,8 @@
 
         .load-more-text {
           font-size: 13px;
-          color: #94a3b8;
+          color: #9ca3af;
         }
       }
     }
   }
-}

@@ -7,13 +7,13 @@
     display: block;
     text-align: center;
     padding: 40px;
-    color: #94a3b8;
+    color: #9ca3af;
     font-size: 14px;
   }
 
   .set-header {
-    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-    border-radius: 16px;
+    background: #ffffff;
+  border-radius: 16px;
     padding: 16px;
     margin-bottom: 12px;
 
@@ -27,7 +27,7 @@
     .set-progress {
       display: block;
       font-size: 13px;
-      color: rgba(255, 255, 255, 0.85);
+      color: #6b7280;
       margin-top: 4px;
     }
   }
@@ -42,7 +42,6 @@
       height: 40px;
       border-radius: 50%;
       background: #ffffff;
-      border: 1px solid #e2e8f0;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -53,8 +52,8 @@
       }
 
       &.answered {
-        border-color: #10b981;
-        background: #f0fdf4;
+        border-color: #111827;
+        background: #f3f4f6;
       }
 
       &.active.answered {
@@ -65,7 +64,7 @@
       .nav-text {
         font-size: 14px;
         font-weight: 700;
-        color: #64748b;
+        color: #6b7280;
       }
     }
 
@@ -74,7 +73,7 @@
     }
 
     .nav-item.answered .nav-text {
-      color: #10b981;
+      color: #111827;
     }
 
     .nav-item.active.answered .nav-text {
@@ -98,15 +97,15 @@
       .question-type {
         font-size: 12px;
         font-weight: 600;
-        color: #3b82f6;
-        background: #eff6ff;
+        color: #111827;
+        background: #f3f4f6;
         padding: 3px 10px;
         border-radius: 10px;
       }
 
       .question-index {
         font-size: 12px;
-        color: #94a3b8;
+        color: #9ca3af;
       }
     }
 
@@ -127,7 +126,7 @@
     .answer-label {
       font-size: 15px;
       font-weight: 700;
-      color: #1e293b;
+      color: #111827;
       display: block;
       margin-bottom: 10px;
     }
@@ -138,7 +137,6 @@
       padding: 12px;
       border-radius: 12px;
       background: #f8fafc;
-      border: 1px solid #e2e8f0;
       font-size: 14px;
       color: #334155;
       line-height: 1.6;
@@ -149,7 +147,7 @@
       display: block;
       text-align: right;
       font-size: 12px;
-      color: #94a3b8;
+      color: #9ca3af;
       margin-top: 8px;
     }
   }
@@ -164,7 +162,7 @@
       padding: 14px 0;
       border-radius: 12px;
       text-align: center;
-      background: #e2e8f0;
+      background: #e5e7eb;
 
       &:active {
         opacity: 0.9;
@@ -175,7 +173,7 @@
       }
 
       &.primary {
-        background: #3b82f6;
+        background: #111827;
       }
 
       &.submit {
@@ -213,20 +211,20 @@
         display: block;
         font-size: 16px;
         font-weight: 700;
-        color: #1e293b;
+        color: #111827;
         margin-bottom: 16px;
       }
 
       .progress-bar {
         height: 8px;
-        background: #e2e8f0;
+        background: #e5e7eb;
         border-radius: 4px;
         overflow: hidden;
         margin-bottom: 10px;
 
         .progress-fill {
           height: 100%;
-          background: #3b82f6;
+          background: #111827;
           border-radius: 4px;
           transition: width 0.3s ease;
         }
@@ -234,8 +232,7 @@
 
       .evaluating-text {
         font-size: 14px;
-        color: #64748b;
+        color: #6b7280;
       }
     }
   }
-}

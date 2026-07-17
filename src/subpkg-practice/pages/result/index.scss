@@ -7,7 +7,7 @@
 
 .loading-text {
   font-size: 16px;
-  color: #64748b;
+  color: #6b7280;
   text-align: center;
   padding: 40px;
   display: block;
@@ -39,7 +39,7 @@
 
 .score-total {
   font-size: 14px;
-  color: #94a3b8;
+  color: #9ca3af;
 }
 
 .score-level {
@@ -53,13 +53,12 @@
   border-radius: 12px;
   padding: 16px;
   margin-bottom: 16px;
-  border: 1px solid #e2e8f0;
-}
+  }
 
 .section-title {
   font-size: 16px;
   font-weight: bold;
-  color: #1e293b;
+  color: #111827;
   display: block;
   margin-bottom: 12px;
 }
@@ -77,7 +76,7 @@
 
 .dimension-name {
   font-size: 14px;
-  color: #475569;
+  color: #4b5563;
 }
 
 .dimension-score {
@@ -87,7 +86,7 @@
 
 .dimension-bar-bg {
   height: 6px;
-  background: #e2e8f0;
+  background: #e5e7eb;
   border-radius: 3px;
   margin-bottom: 6px;
 }
@@ -100,7 +99,7 @@
 
 .dimension-comment {
   font-size: 12px;
-  color: #64748b;
+  color: #6b7280;
   display: block;
 }
 
@@ -110,8 +109,7 @@
   border-radius: 12px;
   padding: 16px;
   margin-bottom: 16px;
-  border: 1px solid #e2e8f0;
-}
+  }
 
 .evaluation-card {
   background: #f8fafc;
@@ -121,7 +119,7 @@
 
 .evaluation-text {
   font-size: 14px;
-  color: #475569;
+  color: #4b5563;
   line-height: 1.6;
   display: block;
 }
@@ -132,15 +130,13 @@
   border-radius: 12px;
   padding: 16px;
   margin-bottom: 16px;
-  border: 1px solid #e2e8f0;
-}
+  }
 
 .improved-card {
-  background: #f0fdf4;
+  background: #f3f4f6;
   border-radius: 8px;
   padding: 12px;
-  border: 1px solid #bbf7d0;
-}
+  }
 
 .improved-text {
   font-size: 14px;
@@ -158,7 +154,7 @@
   padding: 16px;
   padding-bottom: 32px;
   background: white;
-  border-top: 1px solid #e2e8f0;
+  border-top: 1px solid #e5e7eb;
 }
 
 .action-btn {
@@ -168,12 +164,11 @@
 }
 
 .action-btn.primary {
-  background: #3b82f6;
+  background: #111827;
 }
 
 .action-text {
   font-size: 16px;
   font-weight: bold;
-  color: white;
+  color: #111827;
   display: block;
-}

@@ -7,7 +7,7 @@
     display: block;
     text-align: center;
     padding: 40px;
-    color: #94a3b8;
+    color: #9ca3af;
     font-size: 14px;
   }
 
@@ -27,8 +27,8 @@
       .question-type {
         font-size: 12px;
         font-weight: 600;
-        color: #3b82f6;
-        background: #eff6ff;
+        color: #111827;
+        background: #f3f4f6;
         padding: 3px 10px;
         border-radius: 10px;
       }
@@ -50,7 +50,7 @@
     display: block;
     font-size: 15px;
     font-weight: 700;
-    color: #1e293b;
+    color: #111827;
     margin-bottom: 10px;
   }
 
@@ -73,21 +73,19 @@
       .improved-text,
       .reference-text {
         font-size: 14px;
-        color: #475569;
+        color: #4b5563;
         line-height: 1.8;
       }
     }
   }
 
   .improved-section {
-    background: #eff6ff;
-    border: 1px solid #dbeafe;
-  }
+    background: #f3f4f6;
+    }
 
   .reference-section {
-    background: #f0fdf4;
-    border: 1px solid #dcfce7;
-  }
+    background: #f3f4f6;
+    }
 
   .footer {
     padding: 20px 0;
@@ -98,7 +96,7 @@
       text-align: center;
 
       &.primary {
-        background: #3b82f6;
+        background: #111827;
       }
 
       .action-text {
@@ -108,4 +106,3 @@
       }
     }
   }
-}
