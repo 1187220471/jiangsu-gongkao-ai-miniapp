@@ -2,6 +2,7 @@ import { View, Text, ScrollView, Textarea } from '@tarojs/components'
 import Taro, { useRouter } from '@tarojs/taro'
 import { useState, useEffect } from 'react'
 import VoiceInput from '../../../components/VoiceInput'
+import { completeDailyTask } from '../../../utils/dailyTask'
 import './index.scss'
 
 interface ZhentiDetail {
@@ -104,6 +105,8 @@ export default function ZhentiDetail() {
       })
 
       if (res.data.evaluation) {
+        // 完成一次练习，计入每日任务
+        completeDailyTask()
         setResult({
           score: res.data.score,
           evaluation: res.data.evaluation,

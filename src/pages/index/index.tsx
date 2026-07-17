@@ -6,7 +6,11 @@ import iconMicrophone from '../../assets/icons/microphone.png'
 import iconScroll from '../../assets/icons/scroll.png'
 import iconNewspaper from '../../assets/icons/newspaper.png'
 import iconClock from '../../assets/icons/clock.png'
-import pandaMascot from '../../assets/images/panda-mascot-120.png'
+import pandaReading from '../../assets/images/panda-reading-120.png'
+import pandaWriting from '../../assets/images/panda-writing-120.png'
+import pandaThumbsup from '../../assets/images/panda-thumbsup-120.png'
+import { getDailyTask, getTaskHint } from '../../utils/dailyTask'
+import type { DailyTaskState } from '../../utils/dailyTask'
 
 // 全局登录状态
 interface AuthContextType {
@@ -34,8 +38,9 @@ export default function Index() {
   const [user, setUser] = useState<any>(null)
   const [token, setToken] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
+  const [dailyTask, setDailyTask] = useState<DailyTaskState>({ count: 0, total: 3, completed: false, date: '', progress: 0 })
 
-  // 检查本地登录状态
+  // 检查本地登录状态 + 每日任务
   useEffect(() => {
     const storedToken = Taro.getStorageSync('token')
     const storedUser = Taro.getStorageSync('user')
@@ -44,8 +49,12 @@ export default function Index() {
       setUser(storedUser)
       setIsLoggedIn(true)
     }
+    setDailyTask(getDailyTask())
     setLoading(false)
   }, [])
+
+  // 根据完成任务数切换 mascot
+  const pandaMascot = dailyTask.count >= 3 ? pandaThumbsup : dailyTask.count >= 1 ? pandaWriting : pandaReading
 
   const login = (newToken: string, newUser: any) => {
     Taro.setStorageSync('token', newToken)
@@ -186,11 +195,11 @@ export default function Index() {
               </View>
               <View className='hero-stats-row'>
                 <View className='hero-stat-mini'>
-                  <Text className='hero-stat-num'>0</Text>
+                  <Text className='hero-stat-num'>{dailyTask.count}</Text>
                   <Text className='hero-stat-label'>今日练习</Text>
                 </View>
                 <View className='hero-stat-mini'>
-                  <Text className='hero-stat-num'>0%</Text>
+                  <Text className='hero-stat-num'>{dailyTask.progress}%</Text>
                   <Text className='hero-stat-label'>今日目标</Text>
                 </View>
               </View>
@@ -198,8 +207,10 @@ export default function Index() {
           </View>
 
           <View className='progress-track'>
-            <View className='progress-fill' style={{ width: '0%' }} />
+            <View className='progress-fill' style={{ width: `${dailyTask.progress}%` }} />
           </View>
+
+          <Text className='task-hint'>{getTaskHint(dailyTask.count)}</Text>
 
           <Button className='start-btn' onClick={handleStartPractice}>
             开始练习

@@ -2,6 +2,7 @@ import { View, Text, Textarea, ScrollView } from '@tarojs/components'
 import Taro, { useRouter } from '@tarojs/taro'
 import { useState } from 'react'
 import './index.scss'
+import { completeDailyTask } from '../../../utils/dailyTask'
 
 export default function Question() {
   const router = useRouter()
@@ -69,6 +70,8 @@ export default function Question() {
       })
 
       if (res.data.evaluation) {
+        // 完成一次练习，计入每日任务
+        completeDailyTask()
         // 跳转到结果页面
         Taro.navigateTo({
           url: `/subpkg-practice/pages/result/index?result=${encodeURIComponent(JSON.stringify(res.data))}`,
