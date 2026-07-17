@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>训练模块灰色图标预览</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: #e5e5e5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 0;
+  gap: 24px;
+}
+h2 { color: #111827; font-size: 18px; }
+.modules-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  background: #f5f5f5;
+  padding: 16px;
+  border-radius: 20px;
+  width: 375px;
+}
+.module-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 14px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.module-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: #f3f4f6;
+}
+.module-icon img {
+  width: 40px;
+  height: 40px;
+  image-rendering: pixelated;
+  display: block;
+}
+.module-card-title { font-size: 14px; font-weight: 600; color: #111827; }
+.module-card-stats { font-size: 11px; margin-top: 2px; color: #4b5563; font-weight: 500; }
+</style>
+</head>
+<body>
+<h2>训练模块 — 灰色图标预览</h2>
+<div class="modules-grid">
+  <div class="module-card">
+    <div class="module-icon"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAYAAADimHc4AAABT0lEQVR4nO3dsUrDUBiA0VtxEX0zZ6FrcfZpnMVVcPbNFMf6Au2QYvxics7YJS0ff7hcktsxAAC2aDf3Be4fHo9jQT7eX2b/zVNc1V9g6wSICRATICZA7HruVc3b6/NYkv0YxyWtmkxATICYADEBYgLEdlNXO0tb1cxtf3iadXVkAmICxASICRAT4L/tBZ1zd3tz8vPPr+/fusQqmYCYADEBYgLEBIgJEBMgJkBMgJgAMQHWshdkz+cyJiAmQEyAmAAxAWICxASICRATICZATIDYbnPviB1OP+18jnfEVs4tKCZATICYADHnBcVMQEyAmAAxAWICxBZ1guAle01LOwVxKhMQEyAmQEyAmAAxAWICxASICRATICZATICYADEBYgLEBIgJEPNcUMwExASICRATICbAWlZBS/vX1Kmq54tMQEyAmAAxAWICAAAw/t4PmJ8vuR/NyOkAAAAASUVORK5CYII="></div>
+    <div>
+      <div class="module-card-title">AI 面试训练</div>
+      <div class="module-card-stats">200+真题</div>
+    </div>
+  </div>
+  <div class="module-card">
+    <div class="module-icon"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAYAAADimHc4AAABTklEQVR4nO3cQUrDUBRA0SjuzYEidCAuwHW5gOKgIDpwdTrJNGIl8dL8c+YNaS95fF6g0wQAMKKrcz9w9/j8tc2t7MPH68tZv+n1drfCbwgQEyAmQEyA2M1aFzo83E8jOb29r3IdT0BMgJgAMQFiAuzlFLTk6XA7XbLj6XPT63sCYgLEBIgJEBNgL6egpd3IpZyCjgunnbV2Pks8ATEBYgLEBIgJEPNG7I+nNW/EdsIIigkQEyAmQMwuaGYXNCgjKCZATICYADG7oJld0KCMoJgAMQFiAsTsgmZ2QYMygmICxASICRCzC5rZBQ3KCIoJEBMgJkDMLmhmFzQoIygmQEyAmAAxu6CZXdCgjKCYADEBYgLE7IJmdkGDMoJiAsQEiAmw913Q1v+9vLWl7+X/gnbCCIoJEBMgJsDed0H8zBMQEyAmQEyAmAAAAEz/7xuffUZhQ+LNFAAAAABJRU5ErkJggg=="></div>
+    <div>
+      <div class="module-card-title">申论真题训练</div>
+      <div class="module-card-stats">97题</div>
+    </div>
+  </div>
+  <div class="module-card">
+    <div class="module-icon"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAYAAADimHc4AAABcElEQVR4nO3csUpcQRiA0U3Iu6VIELYI2gZrn8ZabA0pFkJS+HRJa+HNMuDdzzv3nFLXu8N+zPAzyB4OAAB79GHpF1++3f697FLm9ufnw6uf9cfLL4WXBIgJEBMgJkDs0+gfHK++rrOSSZx+/R56vR0QEyAmQEyAmABbm4Kuj5/XWckkTEEb4wiKCRATICbA1qagH6fndVayU3ZATICYADEBYgLs9S7o5vvd0OufHu/f1fOXuAvaGEdQTICYADEBtjYFjRqdRkafszS9LP186TnV1GQHxASICRATICbA7FPQ6DSy9tQxau33tQNiAsQEiAkQEyA27V3QW1n7fe2AmAAxAWICxASIuQs6w13Q5BxBMQFiAsQEiLkLOsNd0OQcQTEBYgLEBIi5CzrDXdDkHEExAWICxASYfQra2387j7IDYgLEBIgJEBMg5lsTY3ZATICYADEBYgJsbQoa/VZA/s8OiAkQEyAmQEwAAAAOl/cPRVJKQ/OsbkcAAAAASUVORK5CYII="></div>
+    <div>
+      <div class="module-card-title">每日政务要闻</div>
+      <div class="module-card-stats">每日更新</div>
+    </div>
+  </div>
+  <div class="module-card">
+    <div class="module-icon"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAYAAADimHc4AAABXUlEQVR4nO3dQUrDQBiA0ankdq6FbotrT+Na3BZce756glAGDV9i3ztASvsxww9JM2MAADyi09Yf8PzyehsH9v31selv9LTlxblPgJgAMQFiAsSWraea6+f7OLLzGLctpyYrICZATICYADEBYqfZaefoU83Wzpe3qenICogJEBMgJkBMgNhy9GnnvDJ1rNnb97ICYgLEBIgJEBMgJkBMgJgAMQFiAsQEiAkQEyAmQEyAmAAxAY72dPTe7nBV1/+rO2tWQEyAmAAxAWICxHY3BV0npwvPBfErtqCYADEBYgLEBIgJEBMgJkBMgJgAMQFiAsQEiAkQEyAmQEyAmAAxAWICxASICRDb3XNBs/b2/p9ZVkBMgJgAMQFiAsSWtXcar50ccfSpY2+sgJgAMQFiAsQEiE2fFPpw54hd5v5Z7xyxg7EFxQSICRATIOZM+TucKf/P2YJiAsQEiAkwWj/HLjTTMuG+OQAAAABJRU5ErkJggg=="></div>
+    <div>
+      <div class="module-card-title">练习记录</div>
+      <div class="module-card-stats">查看历史</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

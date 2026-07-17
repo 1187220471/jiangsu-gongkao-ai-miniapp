@@ -114,8 +114,8 @@ export default function Index() {
     {
       title: 'AI 面试训练',
       icon: iconMicrophone,
-      color: '#eff6ff',
-      textColor: '#2563eb',
+      color: '#f3f4f6',
+      textColor: '#4b5563',
       stats: '200+真题',
       route: '/pages/interview/interview',
       isTab: true,
@@ -123,8 +123,8 @@ export default function Index() {
     {
       title: '申论真题训练',
       icon: iconScroll,
-      color: '#f0fdf4',
-      textColor: '#16a34a',
+      color: '#f3f4f6',
+      textColor: '#4b5563',
       stats: '97题',
       route: '/pages/shenlun/shenlun',
       isTab: true,
@@ -132,8 +132,8 @@ export default function Index() {
     {
       title: '每日政务要闻',
       icon: iconNewspaper,
-      color: '#fffbeb',
-      textColor: '#d97706',
+      color: '#f3f4f6',
+      textColor: '#4b5563',
       stats: '每日更新',
       route: '/pages/news/news',
       isTab: true,
@@ -141,8 +141,8 @@ export default function Index() {
     {
       title: '练习记录',
       icon: iconClock,
-      color: '#faf5ff',
-      textColor: '#9333ea',
+      color: '#f3f4f6',
+      textColor: '#4b5563',
       stats: '查看历史',
       route: '/subpkg-history/pages/list/index',
       isTab: false,
