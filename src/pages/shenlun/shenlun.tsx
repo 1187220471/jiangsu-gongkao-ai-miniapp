@@ -51,7 +51,7 @@ export default function Shenlun() {
           </View>
           <View className='module-card-info'>
             <View className='module-card-title-row'>
-              <Text className='module-card-title'>进入真题训练</Text>
+              <Text className='module-card-title'>真题训练</Text>
               <View className='module-card-badge'>
                 <Text className='module-card-badge-text' style={{ color: '#4a5560' }}>97 题</Text>
               </View>
