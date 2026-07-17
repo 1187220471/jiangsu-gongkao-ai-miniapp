@@ -180,8 +180,7 @@ export default function Index() {
 
           <View className='hero-mascot-area'>
             <Image className='hero-mascot' src={turtleMascot} mode='aspectFit' />
-            <Text className='hero-mascot-name'>小龟</Text>
-            <Text className='hero-mascot-level'>Lv.1 · 连续打卡 1 天</Text>
+            <Text className='hero-mascot-streak'>连续打卡 1 天</Text>
           </View>
 
           <View className='today-stats'>
