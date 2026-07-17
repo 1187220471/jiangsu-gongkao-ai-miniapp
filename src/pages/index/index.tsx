@@ -1,7 +1,11 @@
-import { View, Text, Button } from '@tarojs/components'
+import { View, Text, Button, Image } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import { useState, useEffect, createContext, useContext } from 'react'
 import './index.scss'
+import iconMicrophone from '../../assets/icons/microphone.png'
+import iconScroll from '../../assets/icons/scroll.png'
+import iconNewspaper from '../../assets/icons/newspaper.png'
+import iconClock from '../../assets/icons/clock.png'
 
 // 全局登录状态
 interface AuthContextType {
@@ -99,8 +103,7 @@ export default function Index() {
   const modules = [
     {
       title: 'AI 面试训练',
-      subtitle: '真题 · 语音 · 批改',
-      icon: '面',
+      icon: iconMicrophone,
       color: '#eff6ff',
       textColor: '#2563eb',
       stats: '200+真题',
@@ -109,8 +112,7 @@ export default function Index() {
     },
     {
       title: '申论真题训练',
-      subtitle: '材料 · 作答 · AI评',
-      icon: '申',
+      icon: iconScroll,
       color: '#f0fdf4',
       textColor: '#16a34a',
       stats: '97题',
@@ -119,8 +121,7 @@ export default function Index() {
     },
     {
       title: '每日政务要闻',
-      subtitle: '江苏 · 精选 · 积累',
-      icon: '闻',
+      icon: iconNewspaper,
       color: '#fffbeb',
       textColor: '#d97706',
       stats: '每日更新',
@@ -129,8 +130,7 @@ export default function Index() {
     },
     {
       title: '练习记录',
-      subtitle: '历史 · 错题 · 回顾',
-      icon: '记',
+      icon: iconClock,
       color: '#faf5ff',
       textColor: '#9333ea',
       stats: '查看历史',
@@ -214,16 +214,17 @@ export default function Index() {
                 className='module-card'
                 onClick={() => handleNavigate(module.route, module.isTab)}
               >
-                <View className='module-card-top'>
+                <View className='module-card-main'>
                   <View className='module-icon' style={{ background: module.color }}>
-                    <Text className='module-icon-text' style={{ color: module.textColor }}>
-                      {module.icon}
+                    <Image className='module-icon-img' src={module.icon} mode='aspectFit' />
+                  </View>
+                  <View className='module-card-info'>
+                    <Text className='module-card-title'>{module.title}</Text>
+                    <Text className='module-card-stats' style={{ color: module.textColor }}>
+                      {module.stats}
                     </Text>
                   </View>
-                  <Text className='module-stats'>{module.stats}</Text>
                 </View>
-                <Text className='module-card-title'>{module.title}</Text>
-                <Text className='module-card-subtitle'>{module.subtitle}</Text>
               </View>
             ))}
           </View>

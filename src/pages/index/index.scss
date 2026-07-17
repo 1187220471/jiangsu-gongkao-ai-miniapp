@@ -167,11 +167,8 @@
 .module-card {
   background: #ffffff;
   border-radius: 16px;
-  padding: 16px;
+  padding: 14px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
 
   &:active {
     opacity: 0.85;
@@ -179,44 +176,46 @@
   }
 }
 
-.module-card-top {
+.module-card-main {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 4px;
+  gap: 12px;
 }
 
 .module-icon {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 
-.module-icon-text {
-  font-size: 16px;
-  font-weight: 700;
-  line-height: 1;
+.module-icon-img {
+  width: 24px;
+  height: 24px;
+  image-rendering: pixelated;
+  display: block;
 }
 
-.module-stats {
-  font-size: 11px;
-  color: #9ca3af;
-  font-weight: 500;
+.module-card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
 }
 
 .module-card-title {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
   color: #111827;
   display: block;
 }
 
-.module-card-subtitle {
-  font-size: 12px;
-  color: #9ca3af;
+.module-card-stats {
+  font-size: 11px;
+  font-weight: 500;
   display: block;
 }
 
