@@ -1,29 +1,18 @@
 .profile-scroll {
   height: 100vh;
-  background: #f8fafc;
+  background: #f5f5f5;
 }
 
 .profile {
   padding: 0 16px 30px;
 
-  /* 顶部用户信息 - 深蓝灰渐变 */
+  /* 顶部用户信息卡片（与首页同款） */
   .user-header {
     background: #ffffff;
-  margin: 0 -16px 16px;
+    margin: 0 -16px 16px;
     padding: 40px 16px 24px;
     position: relative;
-
-    &::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: radial-gradient(ellipse at 70% 20%, rgba(59, 130, 246, 0.15) 0%, transparent 60%),
-                  radial-gradient(ellipse at 30% 80%, rgba(16, 185, 129, 0.1) 0%, transparent 50%);
-      pointer-events: none;
-    }
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
 
     .user-header-content {
       display: flex;
@@ -36,13 +25,13 @@
     .avatar {
       width: 64px;
       height: 64px;
-      background: rgba(255, 255, 255, 0.12);
+      background: #f5f5f5;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      border: 2px solid rgba(255, 255, 255, 0.2);
+      border: 1px solid #e5e7eb;
 
       .avatar-text {
         font-size: 32px;
@@ -54,10 +43,11 @@
 
       .nickname {
         font-size: 20px;
-        font-weight: bold;
-        color: #ffffff;
+        font-weight: 700;
+        color: #111827;
         margin-bottom: 8px;
         display: block;
+        letter-spacing: 0.3px;
       }
 
       .member-tag {
@@ -69,13 +59,13 @@
 
         .member-tag-text {
           font-size: 12px;
-          font-weight: 500;
+          font-weight: 600;
         }
       }
 
       .join-date {
         font-size: 12px;
-        color: rgba(148, 163, 184, 0.8);
+        color: #9ca3af;
         display: block;
       }
     }
@@ -93,11 +83,11 @@
       border-radius: 12px;
       padding: 14px 8px;
       text-align: center;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
 
       .overview-value {
         font-size: 20px;
-        font-weight: bold;
+        font-weight: 700;
         color: #111827;
         display: block;
         margin-bottom: 4px;
@@ -114,10 +104,10 @@
   /* 通用卡片 */
   .section-card {
     background: #ffffff;
-    border-radius: 12px;
+    border-radius: 16px;
     padding: 16px;
     margin-bottom: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
 
     .section-header {
       display: flex;
@@ -131,7 +121,7 @@
 
       .section-title {
         font-size: 15px;
-        font-weight: bold;
+        font-weight: 700;
         color: #111827;
       }
     }
@@ -174,14 +164,14 @@
 
     .stat-item {
       flex: 1;
-      background: #f8fafc;
+      background: #f5f5f5;
       border-radius: 10px;
       padding: 14px;
       text-align: center;
 
       .stat-value {
         font-size: 22px;
-        font-weight: bold;
+        font-weight: 700;
         color: #111827;
         margin-bottom: 4px;
         display: block;
@@ -200,8 +190,9 @@
       display: flex;
       align-items: center;
       padding: 14px 0;
+
       &:last-child {
-        border-bottom: none;
+        padding-bottom: 0;
       }
 
       &:active {
@@ -242,7 +233,7 @@
       width: 100%;
       height: 44px;
       background: #f3f4f6;
-      border-radius: 8px;
+      border-radius: 10px;
       padding: 0 12px;
       font-size: 14px;
       color: #111827;
@@ -253,11 +244,11 @@
     .bind-btn {
       width: 100%;
       height: 44px;
-      background: #ffffff;
-  color: #ffffff;
-      border-radius: 8px;
+      background: #111827;
+      color: #ffffff;
+      border-radius: 10px;
       font-size: 15px;
-      font-weight: bold;
+      font-weight: 600;
       line-height: 44px;
       border: none;
     }
@@ -282,11 +273,11 @@
   .login-btn {
     width: 100%;
     height: 48px;
-    background: #ffffff;
-  color: #ffffff;
-    border-radius: 10px;
+    background: #111827;
+    color: #ffffff;
+    border-radius: 12px;
     font-size: 16px;
-    font-weight: bold;
+    font-weight: 600;
     line-height: 48px;
     border: none;
     margin-top: 20px;
@@ -298,11 +289,12 @@
     height: 48px;
     background: #ffffff;
     color: #ef4444;
-    border-radius: 10px;
+    border-radius: 12px;
     font-size: 15px;
-    font-weight: bold;
+    font-weight: 600;
     line-height: 48px;
     margin-top: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
   }
 
   /* 加载 */
