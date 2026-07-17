@@ -9,8 +9,8 @@ import iconClock from '../../assets/icons/clock.png'
 import pandaReading from '../../assets/images/panda-reading-120.png'
 import pandaWriting from '../../assets/images/panda-writing-120.png'
 import pandaThumbsup from '../../assets/images/panda-thumbsup-120.png'
-import { getDailyTask, getTaskHint } from '../../utils/dailyTask'
-import type { DailyTaskState } from '../../utils/dailyTask'
+import { getDailyTask, getTaskHint, getMascotStage, setDailyTaskTarget } from '../../utils/dailyTask'
+import type { DailyTaskState, MascotStage } from '../../utils/dailyTask'
 
 // 全局登录状态
 interface AuthContextType {
@@ -33,12 +33,15 @@ export function useAuth() {
   return useContext(AuthContext)
 }
 
+const TARGET_PRESETS = [1, 3, 5, 10]
+
 export default function Index() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [user, setUser] = useState<any>(null)
   const [token, setToken] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
-  const [dailyTask, setDailyTask] = useState<DailyTaskState>({ count: 0, total: 3, completed: false, date: '', progress: 0 })
+  const [dailyTask, setDailyTask] = useState<DailyTaskState>({ count: 0, target: 3, completed: false, date: '', progress: 0 })
+  const [showTargetPicker, setShowTargetPicker] = useState(false)
 
   // 检查本地登录状态 + 每日任务
   useEffect(() => {
@@ -53,8 +56,9 @@ export default function Index() {
     setLoading(false)
   }, [])
 
-  // 根据完成任务数切换 mascot
-  const pandaMascot = dailyTask.count >= 3 ? pandaThumbsup : dailyTask.count >= 1 ? pandaWriting : pandaReading
+  // 根据完成比例切换 mascot（0-32% 阅读 / 33-65% 写作 / 66%+ 点赞）
+  const stage = getMascotStage(dailyTask.progress)
+  const pandaMascot = stage === 2 ? pandaThumbsup : stage === 1 ? pandaWriting : pandaReading
 
   const login = (newToken: string, newUser: any) => {
     Taro.setStorageSync('token', newToken)
@@ -108,6 +112,12 @@ export default function Index() {
 
   const handleStartPractice = () => {
     Taro.switchTab({ url: '/pages/interview/interview' })
+  }
+
+  const handleSetTarget = (n: number) => {
+    const state = setDailyTaskTarget(n)
+    setDailyTask(state)
+    setShowTargetPicker(false)
   }
 
   const modules = [
@@ -198,8 +208,11 @@ export default function Index() {
                   <Text className='hero-stat-num'>{dailyTask.count}</Text>
                   <Text className='hero-stat-label'>今日练习</Text>
                 </View>
-                <View className='hero-stat-mini'>
-                  <Text className='hero-stat-num'>{dailyTask.progress}%</Text>
+                <View className='hero-stat-mini target-col'>
+                  <View className='target-header'>
+                    <Text className='hero-stat-num'>{dailyTask.progress}%</Text>
+                    <Text className='target-gear' onClick={(e) => { e.stopPropagation(); setShowTargetPicker(true) }}>⚙</Text>
+                  </View>
                   <Text className='hero-stat-label'>今日目标</Text>
                 </View>
               </View>
@@ -210,7 +223,7 @@ export default function Index() {
             <View className='progress-fill' style={{ width: `${dailyTask.progress}%` }} />
           </View>
 
-          <Text className='task-hint'>{getTaskHint(dailyTask.count)}</Text>
+          <Text className='task-hint'>{getTaskHint(dailyTask.count, dailyTask.target)}</Text>
 
           <Button className='start-btn' onClick={handleStartPractice}>
             开始练习
@@ -260,6 +273,30 @@ export default function Index() {
         <View className='footer'>
           <Text className='footer-text'>个人备考工具 · 非经营性</Text>
         </View>
+
+        {/* 目标设置弹层 */}
+        {showTargetPicker && (
+          <View className='target-picker-overlay' onClick={() => setShowTargetPicker(false)}>
+            <View className='target-picker' onClick={(e) => e.stopPropagation()}>
+              <View className='target-picker-header'>
+                <Text className='target-picker-title'>设置今日目标</Text>
+                <Text className='target-picker-close' onClick={() => setShowTargetPicker(false)}>✕</Text>
+              </View>
+              <View className='target-presets'>
+                {TARGET_PRESETS.map((n) => (
+                  <View
+                    key={n}
+                    className={`target-preset ${dailyTask.target === n ? 'target-preset-active' : ''}`}
+                    onClick={() => handleSetTarget(n)}
+                  >
+                    <Text className='target-preset-text'>{n} 次</Text>
+                  </View>
+                ))}
+              </View>
+              <Text className='target-picker-hint'>预设次数，点击即生效</Text>
+            </View>
+          </View>
+        )}
       </View>
     </AuthContext.Provider>
   )
