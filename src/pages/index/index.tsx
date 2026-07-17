@@ -1,8 +1,7 @@
-import { View, Text, Button, Image } from '@tarojs/components'
+import { View, Text, Button } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import { useState, useEffect, createContext, useContext } from 'react'
 import './index.scss'
-import pandaMascot from '../../assets/images/panda-mascot.png'
 
 // 全局登录状态
 interface AuthContextType {
@@ -132,9 +131,6 @@ export default function Index() {
         {/* 顶部横幅 */}
         <View className='hero-banner'>
           <View className='hero-content'>
-            <View className='hero-mascot-wrap'>
-              <Image className='hero-mascot' src={pandaMascot} mode='aspectFit' />
-            </View>
             <Text className='hero-title'>申面智能小助手</Text>
             <Text className='hero-subtitle'>面试 · 申论 · 时政 智能训练平台</Text>
           </View>
