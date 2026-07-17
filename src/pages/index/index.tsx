@@ -62,13 +62,13 @@ export default function Index() {
     try {
       const { code } = await Taro.login()
       console.log('获取到 code:', code)
-      
+
       const res = await Taro.request({
         url: 'https://www.mianshidati.xyz/api/auth/wechat-login',
         method: 'POST',
         data: { code },
       })
-      
+
       console.log('后端返回:', res.data)
 
       if (res.data.token) {
@@ -84,36 +84,67 @@ export default function Index() {
     }
   }
 
+  const handleNavigate = (route: string, isTab: boolean) => {
+    if (isTab) {
+      Taro.switchTab({ url: route })
+    } else {
+      Taro.navigateTo({ url: route })
+    }
+  }
+
+  const handleStartPractice = () => {
+    Taro.switchTab({ url: '/pages/interview/interview' })
+  }
+
   const modules = [
     {
-      title: '公考面试训练',
-      subtitle: 'AI出题 · 语音答题 · 智能批改',
-      icon: '🎤',
-      gradient: 'linear-gradient(135deg, #3b82f6, #2563eb)',
+      title: 'AI 面试训练',
+      subtitle: '真题 · 语音 · 批改',
+      icon: '面',
+      color: '#eff6ff',
+      textColor: '#2563eb',
       stats: '200+真题',
       route: '/pages/interview/interview',
+      isTab: true,
     },
     {
-      title: '公考申论训练',
-      subtitle: '历年真题 · 材料分析 · AI批改',
-      icon: '📝',
-      gradient: 'linear-gradient(135deg, #10b981, #059669)',
-      stats: '97道题目',
+      title: '申论真题训练',
+      subtitle: '材料 · 作答 · AI评',
+      icon: '申',
+      color: '#f0fdf4',
+      textColor: '#16a34a',
+      stats: '97题',
       route: '/pages/shenlun/shenlun',
+      isTab: true,
     },
     {
       title: '每日政务要闻',
-      subtitle: '江苏政务 · AI精选 · 备考积累',
-      icon: '📰',
-      gradient: 'linear-gradient(135deg, #f59e0b, #d97706)',
+      subtitle: '江苏 · 精选 · 积累',
+      icon: '闻',
+      color: '#fffbeb',
+      textColor: '#d97706',
       stats: '每日更新',
       route: '/pages/news/news',
+      isTab: true,
+    },
+    {
+      title: '练习记录',
+      subtitle: '历史 · 错题 · 回顾',
+      icon: '记',
+      color: '#faf5ff',
+      textColor: '#9333ea',
+      stats: '查看历史',
+      route: '/subpkg-history/pages/list/index',
+      isTab: false,
     },
   ]
 
-  const handleNavigate = (route: string) => {
-    Taro.switchTab({ url: route })
-  }
+  const stats = [
+    { num: '200+', label: '面试真题' },
+    { num: '97', label: '申论题目' },
+    { num: '7', label: '面试题型' },
+    { num: 'AI', label: '智能批改' },
+  ]
 
   if (loading) {
     return (
@@ -128,47 +159,68 @@ export default function Index() {
   return (
     <AuthContext.Provider value={{ isLoggedIn, user, token, login, logout }}>
       <View className='index'>
-        {/* 顶部横幅 */}
-        <View className='hero-banner'>
-          <View className='hero-content'>
-            <Text className='hero-title'>申面智能小助手</Text>
-            <Text className='hero-subtitle'>面试 · 申论 · 时政 智能训练平台</Text>
-          </View>
-          
-          {/* 登录状态 */}
-          {!isLoggedIn ? (
-            <View className='login-bar'>
-              <Text className='login-bar-text'>登录后同步训练记录</Text>
-              <Button className='login-bar-btn' onClick={handleLogin}>
-                微信登录
+        {/* 顶部 Hero 卡片 */}
+        <View className='hero-card'>
+          <View className='hero-header'>
+            <View className='hero-brand'>
+              <Text className='hero-title'>申面智能小助手</Text>
+              <Text className='hero-subtitle'>你的个人备考助手</Text>
+            </View>
+            {!isLoggedIn ? (
+              <Button className='login-pill' onClick={handleLogin}>
+                登录
               </Button>
+            ) : (
+              <View className='user-pill'>
+                <Text className='user-pill-text'>{user?.nickname || user?.username || '我'}</Text>
+              </View>
+            )}
+          </View>
+
+          <View className='today-stats'>
+            <View className='today-stat'>
+              <Text className='today-stat-num'>0</Text>
+              <Text className='today-stat-label'>今日练习</Text>
             </View>
-          ) : (
-            <View className='user-bar'>
-              <Text className='user-welcome'>你好，{user?.nickname || user?.username || '同学'}</Text>
-              <Text className='user-logout' onClick={logout}>退出</Text>
+            <View className='today-stat'>
+              <Text className='today-stat-num'>1</Text>
+              <Text className='today-stat-label'>连续打卡</Text>
             </View>
-          )}
+          </View>
+
+          <View className='progress-area'>
+            <View className='progress-labels'>
+              <Text className='progress-title'>今日目标</Text>
+              <Text className='progress-value'>0%</Text>
+            </View>
+            <View className='progress-track'>
+              <View className='progress-fill' style={{ width: '0%' }} />
+            </View>
+            <Text className='progress-hint'>完成 1 道练习即可达成目标</Text>
+          </View>
+
+          <Button className='start-btn' onClick={handleStartPractice}>
+            开始练习
+          </Button>
         </View>
 
-        {/* 模块卡片 */}
-        <View className='modules-section'>
+        {/* 训练模块 */}
+        <View className='section'>
           <Text className='section-title'>训练模块</Text>
           <View className='modules-grid'>
             {modules.map((module) => (
               <View
                 key={module.route}
                 className='module-card'
-                style={{ background: module.gradient }}
-                onClick={() => handleNavigate(module.route)}
+                onClick={() => handleNavigate(module.route, module.isTab)}
               >
-                <View className='module-card-header'>
-                  <View className='module-icon-bg'>
-                    <Text className='module-icon-text'>{module.icon}</Text>
+                <View className='module-card-top'>
+                  <View className='module-icon' style={{ background: module.color }}>
+                    <Text className='module-icon-text' style={{ color: module.textColor }}>
+                      {module.icon}
+                    </Text>
                   </View>
-                  <View className='module-stats-badge'>
-                    <Text className='module-stats-text'>{module.stats}</Text>
-                  </View>
+                  <Text className='module-stats'>{module.stats}</Text>
                 </View>
                 <Text className='module-card-title'>{module.title}</Text>
                 <Text className='module-card-subtitle'>{module.subtitle}</Text>
@@ -177,32 +229,22 @@ export default function Index() {
           </View>
         </View>
 
-        {/* 平台数据 */}
-        <View className='platform-stats'>
-          <Text className='stats-section-title'>平台数据</Text>
-          <View className='stats-row'>
-            <View className='stats-item'>
-              <Text className='stats-num'>200+</Text>
-              <Text className='stats-label'>面试真题</Text>
-            </View>
-            <View className='stats-item'>
-              <Text className='stats-num'>97</Text>
-              <Text className='stats-label'>申论题目</Text>
-            </View>
-            <View className='stats-item'>
-              <Text className='stats-num'>AI</Text>
-              <Text className='stats-label'>智能批改</Text>
-            </View>
-            <View className='stats-item'>
-              <Text className='stats-num'>7</Text>
-              <Text className='stats-label'>面试题型</Text>
-            </View>
+        {/* 数据概览 */}
+        <View className='section'>
+          <Text className='section-title'>数据概览</Text>
+          <View className='stats-grid'>
+            {stats.map((stat) => (
+              <View key={stat.label} className='stat-card'>
+                <Text className='stat-num'>{stat.num}</Text>
+                <Text className='stat-label'>{stat.label}</Text>
+              </View>
+            ))}
           </View>
         </View>
 
-        {/* 底部信息 */}
+        {/* 底部 */}
         <View className='footer'>
-          <Text className='footer-text'>申面智能小助手 · 助你上岸</Text>
+          <Text className='footer-text'>个人备考工具 · 非经营性</Text>
         </View>
       </View>
     </AuthContext.Provider>
