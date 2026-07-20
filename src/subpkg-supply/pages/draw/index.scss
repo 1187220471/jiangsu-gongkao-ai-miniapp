@@ -1,0 +1,447 @@
+.supply-draw-page {
+  min-height: 100vh;
+  background: #f5f5f5;
+  padding: 20px 16px 40px;
+}
+
+/* ============ 状态栏 ============ */
+.status-bar {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+
+  .status-card {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 14px 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+
+    .status-label {
+      font-size: 12px;
+      color: #9ca3af;
+      margin-bottom: 6px;
+    }
+
+    .status-value {
+      font-size: 16px;
+      font-weight: 700;
+      color: #111827;
+
+      &.used {
+        color: #9ca3af;
+      }
+    }
+  }
+}
+
+/* ============ 抽卡机 ============ */
+.machine {
+  position: relative;
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 16px 20px 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+
+  .machine-lights {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    margin-bottom: 10px;
+
+    .light {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #d1d5db;
+      animation: light-blink 1.4s ease-in-out infinite;
+
+      &:nth-child(4n+1) { background: #f9a8d4; }
+      &:nth-child(4n+2) { background: #fcd34d; }
+      &:nth-child(4n+3) { background: #93c5fd; }
+      &:nth-child(4n+4) { background: #c4b5fd; }
+    }
+  }
+
+  .machine-title {
+    display: block;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 700;
+    color: #111827;
+    letter-spacing: 5px;
+    margin-bottom: 16px;
+  }
+
+  .machine-body {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 14px;
+  }
+
+  .reel-row {
+    display: flex;
+    gap: 10px;
+  }
+
+  .reel-window {
+    width: 88px;
+    height: 100px;
+    background: #f9fafb;
+    border: 2px solid #e5e7eb;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.04);
+
+    .reel-img {
+      width: 72px;
+      height: 72px;
+      image-rendering: pixelated;
+
+      &.capsule {
+        width: 64px;
+        height: 64px;
+        opacity: 0.85;
+      }
+
+      &.spinning {
+        animation: reel-bounce 0.2s ease-in-out infinite;
+      }
+    }
+  }
+
+  /* 拉杆 */
+  .lever {
+    position: absolute;
+    right: -8px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .lever-ball {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #f472b6;
+      border: 3px solid #ffffff;
+      box-shadow: 0 2px 6px rgba(244, 114, 182, 0.5);
+      transition: transform 0.25s ease;
+      z-index: 2;
+    }
+
+    .lever-stick {
+      width: 6px;
+      height: 44px;
+      background: #d1d5db;
+      border-radius: 3px;
+      margin-top: -3px;
+      transition: height 0.25s ease;
+    }
+
+    &.pulled {
+      .lever-ball {
+        transform: translateY(26px);
+      }
+
+      .lever-stick {
+        height: 18px;
+      }
+    }
+  }
+
+  .machine-sticker {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: #f3f4f6;
+    border-radius: 10px;
+    padding: 7px 12px;
+    margin: 0 8px 14px;
+
+    .sticker-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .sticker-text {
+      font-size: 12px;
+      font-weight: 600;
+      color: #374151;
+    }
+
+    .sticker-divider {
+      font-size: 12px;
+      color: #9ca3af;
+    }
+  }
+
+  /* 出卡口 */
+  .machine-slot {
+    width: 55%;
+    height: 10px;
+    background: #e5e7eb;
+    border-radius: 5px;
+    margin: 0 auto;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+  }
+}
+
+@keyframes light-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+@keyframes reel-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+/* ============ 抽卡按钮 ============ */
+.draw-btn {
+  width: 100%;
+  height: 52px;
+  line-height: 52px;
+  background: #111827;
+  color: #ffffff;
+  border-radius: 16px;
+  font-size: 16px;
+  font-weight: 700;
+  text-align: center;
+  border: none;
+  padding: 0;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 0 #374151;
+  letter-spacing: 1px;
+
+  &:active {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 #374151;
+  }
+
+  &.disabled {
+    background: #d1d5db;
+    color: #ffffff;
+    box-shadow: 0 4px 0 #9ca3af;
+  }
+
+  &[disabled] {
+    opacity: 0.95;
+  }
+}
+
+/* ============ 图鉴入口 ============ */
+.bag-entry {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 16px 18px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+
+  .bag-entry-left {
+    display: flex;
+    flex-direction: column;
+
+    .bag-entry-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 4px;
+    }
+
+    .bag-entry-desc {
+      font-size: 12px;
+      color: #9ca3af;
+    }
+  }
+
+  .bag-entry-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    .bag-entry-count {
+      font-size: 13px;
+      color: #6b7280;
+      font-weight: 500;
+    }
+
+    .bag-entry-arrow {
+      font-size: 15px;
+      color: #9ca3af;
+    }
+  }
+}
+
+/* ============ 奖池区域 ============ */
+.pool-area {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.pool-section {
+  .pool-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 12px;
+    padding: 0 4px;
+
+    .pool-section-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #111827;
+    }
+
+    .pool-section-count {
+      font-size: 12px;
+      color: #9ca3af;
+    }
+  }
+
+  .pool-row {
+    display: flex;
+    flex-direction: row;
+    white-space: nowrap;
+
+    .pool-card {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      width: 96px;
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 14px 0;
+      margin-right: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+      flex-shrink: 0;
+
+      &.locked {
+        background: #f3f4f6;
+      }
+
+      .pool-card-img {
+        width: 56px;
+        height: 56px;
+        image-rendering: pixelated;
+        margin-bottom: 10px;
+      }
+
+      .pool-card-lock {
+        width: 56px;
+        height: 56px;
+        line-height: 56px;
+        text-align: center;
+        font-size: 24px;
+        color: #d1d5db;
+        font-weight: 700;
+        margin-bottom: 10px;
+      }
+
+      .pool-card-name {
+        font-size: 13px;
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 4px;
+      }
+
+      .pool-card-rarity {
+        font-size: 11px;
+        font-weight: 600;
+      }
+    }
+  }
+}
+
+/* ============ 结果弹窗 ============ */
+.result-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 24px;
+
+  .result-card {
+    background: #ffffff;
+    border-radius: 24px;
+    padding: 32px 28px;
+    width: 100%;
+    max-width: 320px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .result-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 20px;
+      letter-spacing: 2px;
+    }
+
+    .result-img {
+      width: 150px;
+      height: 150px;
+      image-rendering: pixelated;
+      margin-bottom: 16px;
+    }
+
+    .result-name {
+      font-size: 22px;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 6px;
+    }
+
+    .result-rarity {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .result-repeat {
+      font-size: 13px;
+      color: #6b7280;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .result-btn {
+      width: 100%;
+      height: 46px;
+      line-height: 46px;
+      border-radius: 14px;
+      background: #111827;
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: 600;
+      border: none;
+      box-shadow: 0 4px 0 #374151;
+
+      &:active {
+        transform: translateY(2px);
+        box-shadow: 0 2px 0 #374151;
+      }
+    }
+  }
+}

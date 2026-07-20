@@ -3,6 +3,7 @@ import Taro, { useRouter } from '@tarojs/taro'
 import { useState } from 'react'
 import './index.scss'
 import { completeDailyTask } from '../../../utils/dailyTask'
+import { earnPoints } from '../../../utils/supply'
 
 export default function Question() {
   const router = useRouter()
@@ -72,6 +73,10 @@ export default function Question() {
       if (res.data.evaluation) {
         // 完成一次练习，计入每日任务
         completeDailyTask()
+        // 发放学习点奖励
+        earnPoints('answer', `answer-${Date.now()}`).catch((err) => {
+          console.error('发放学习点失败:', err)
+        })
         // 跳转到结果页面
         Taro.navigateTo({
           url: `/subpkg-practice/pages/result/index?result=${encodeURIComponent(JSON.stringify(res.data))}`,

@@ -41,6 +41,14 @@ export default defineAppConfig({
         'pages/detail/index',
       ],
     },
+    {
+      root: 'subpkg-supply',
+      pages: [
+        'pages/draw/index',
+        'pages/collection/index',
+        'pages/collection/detail',
+      ],
+    },
   ],
   tabBar: {
     color: '#999999',

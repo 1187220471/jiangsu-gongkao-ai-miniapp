@@ -3,6 +3,7 @@ import Taro, { useRouter } from '@tarojs/taro'
 import { useState, useEffect } from 'react'
 import './index.scss'
 import { completeDailyTask } from '../../../utils/dailyTask'
+import { earnPoints } from '../../../utils/supply'
 
 interface SetQuestion {
   index: number
@@ -150,6 +151,10 @@ export default function SetQuestionPage() {
 
     // 完成一次套题练习，计入每日任务
     completeDailyTask()
+    // 发放学习点奖励
+    earnPoints('set', `set-${Date.now()}`).catch((err) => {
+      console.error('发放学习点失败:', err)
+    })
 
     // 跳转到结果页
     Taro.navigateTo({

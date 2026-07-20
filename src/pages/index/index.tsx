@@ -11,6 +11,7 @@ import pandaWriting from '../../assets/images/panda-writing-120.png'
 import pandaThumbsup from '../../assets/images/panda-thumbsup-120.png'
 import { getDailyTask, getTaskHint, getMascotStage, setDailyTaskTarget } from '../../utils/dailyTask'
 import type { DailyTaskState, MascotStage } from '../../utils/dailyTask'
+import { fetchSupplyBalance } from '../../utils/supply'
 
 // 全局登录状态
 interface AuthContextType {
@@ -42,6 +43,7 @@ export default function Index() {
   const [loading, setLoading] = useState(true)
   const [dailyTask, setDailyTask] = useState<DailyTaskState>({ count: 0, target: 3, completed: false, date: '', progress: 0 })
   const [showTargetPicker, setShowTargetPicker] = useState(false)
+  const [supplyBalance, setSupplyBalance] = useState(0)
 
   // 检查本地登录状态 + 每日任务
   useEffect(() => {
@@ -54,6 +56,13 @@ export default function Index() {
     }
     setDailyTask(getDailyTask())
     setLoading(false)
+
+    // 获取学习点余额
+    if (storedToken) {
+      fetchSupplyBalance()
+        .then((data) => setSupplyBalance(data.balance))
+        .catch((err) => console.error('获取学习点失败:', err))
+    }
   }, [])
 
   // 根据完成比例切换 mascot（0-32% 阅读 / 33-65% 写作 / 66%+ 点赞）
@@ -112,6 +121,10 @@ export default function Index() {
 
   const handleStartPractice = () => {
     Taro.switchTab({ url: '/pages/interview/interview' })
+  }
+
+  const handleGoSupply = () => {
+    Taro.navigateTo({ url: '/subpkg-supply/pages/draw/index' })
   }
 
   const handleSetTarget = (n: number) => {
@@ -228,6 +241,21 @@ export default function Index() {
           <Button className='start-btn' onClick={handleStartPractice}>
             开始练习
           </Button>
+        </View>
+
+        {/* 补给站入口 */}
+        <View className='supply-entry' onClick={handleGoSupply}>
+          <View className='supply-entry-left'>
+            <Text className='supply-entry-icon'>🎁</Text>
+            <View className='supply-entry-info'>
+              <Text className='supply-entry-title'>补给站</Text>
+              <Text className='supply-entry-subtitle'>答题赚学习点，抽取像素萌宠</Text>
+            </View>
+          </View>
+          <View className='supply-entry-right'>
+            <Text className='supply-entry-points'>{supplyBalance} 点</Text>
+            <Text className='supply-entry-arrow'>→</Text>
+          </View>
         </View>
 
         {/* 训练模块 */}

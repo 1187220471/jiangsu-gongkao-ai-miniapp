@@ -3,6 +3,7 @@ import Taro from '@tarojs/taro'
 import { View, Text, ScrollView, Textarea, Button } from '@tarojs/components'
 import VoiceInput from '../../../components/VoiceInput'
 import { completeDailyTask } from '../../../utils/dailyTask'
+import { earnPoints } from '../../../utils/supply'
 import './index.scss'
 
 const API_BASE = 'https://www.mianshidati.xyz'
@@ -69,6 +70,10 @@ export default function ShenlunDetail() {
       if (res.statusCode === 200 && res.data) {
         // 完成一次练习，计入每日任务
         completeDailyTask()
+        // 发放学习点奖励
+        earnPoints('shenlun', `shenlun-${Date.now()}`).catch((err) => {
+          console.error('发放学习点失败:', err)
+        })
         setResult(res.data)
         setActiveTab('result')
         Taro.showToast({ title: '批改完成', icon: 'success' })

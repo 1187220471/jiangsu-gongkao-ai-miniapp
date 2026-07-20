@@ -3,6 +3,7 @@ import Taro, { useRouter } from '@tarojs/taro'
 import { useState, useEffect } from 'react'
 import VoiceInput from '../../../components/VoiceInput'
 import { completeDailyTask } from '../../../utils/dailyTask'
+import { earnPoints } from '../../../utils/supply'
 import './index.scss'
 
 interface ZhentiDetail {
@@ -107,6 +108,10 @@ export default function ZhentiDetail() {
       if (res.data.evaluation) {
         // 完成一次练习，计入每日任务
         completeDailyTask()
+        // 发放学习点奖励
+        earnPoints('zhenti', `zhenti-${Date.now()}`).catch((err) => {
+          console.error('发放学习点失败:', err)
+        })
         setResult({
           score: res.data.score,
           evaluation: res.data.evaluation,

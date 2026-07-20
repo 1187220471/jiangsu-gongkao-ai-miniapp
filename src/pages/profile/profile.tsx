@@ -2,6 +2,7 @@ import { View, Text, Button, Input, ScrollView } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import { useState, useEffect } from 'react'
 import './profile.scss'
+import { fetchSupplyBalance } from '../../utils/supply'
 
 interface UserProfile {
   user: {
@@ -30,10 +31,20 @@ export default function Profile() {
   const [bindMessage, setBindMessage] = useState('')
   const [bindError, setBindError] = useState('')
   const [showBindCard, setShowBindCard] = useState(false)
+  const [supplyBalance, setSupplyBalance] = useState(0)
 
   useEffect(() => {
     loadProfile()
+    loadSupplyBalance()
   }, [])
+
+  const loadSupplyBalance = () => {
+    const token = Taro.getStorageSync('token')
+    if (!token) return
+    fetchSupplyBalance()
+      .then((data) => setSupplyBalance(data.balance))
+      .catch((err) => console.error('获取学习点失败:', err))
+  }
 
   const loadProfile = () => {
     const token = Taro.getStorageSync('token')
@@ -75,6 +86,7 @@ export default function Profile() {
                 Taro.setStorageSync('token', loginRes.data.token)
                 Taro.setStorageSync('user', loginRes.data.user)
                 loadProfile()
+                loadSupplyBalance()
                 Taro.showToast({ title: '登录成功', icon: 'success' })
               } else {
                 Taro.showToast({
@@ -255,6 +267,30 @@ export default function Profile() {
                     {profile.stats.avgScore ? `${profile.stats.avgScore}分` : '—'}
                   </Text>
                   <Text className='stat-label'>平均得分</Text>
+                </View>
+              </View>
+            </View>
+
+            {/* 学习激励 */}
+            <View className='section-card'>
+              <View className='section-header'>
+                <Text className='section-icon'>🎁</Text>
+                <Text className='section-title'>学习激励</Text>
+              </View>
+              <View className='points-overview'>
+                <Text className='points-overview-value'>{supplyBalance}</Text>
+                <Text className='points-overview-label'>学习点</Text>
+              </View>
+              <View className='menu-list'>
+                <View className='menu-item' onClick={() => Taro.navigateTo({ url: '/subpkg-supply/pages/draw/index' })}>
+                  <Text className='menu-icon'>🎲</Text>
+                  <Text className='menu-text'>补给站</Text>
+                  <Text className='menu-arrow'>›</Text>
+                </View>
+                <View className='menu-item' onClick={() => Taro.navigateTo({ url: '/subpkg-supply/pages/collection/index' })}>
+                  <Text className='menu-icon'>🐱</Text>
+                  <Text className='menu-text'>我的图鉴</Text>
+                  <Text className='menu-arrow'>›</Text>
                 </View>
               </View>
             </View>
