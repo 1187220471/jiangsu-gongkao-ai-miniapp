@@ -210,8 +210,13 @@
   margin-top: 20px;
 }
 
+.stale-two-btns {
+  display: flex;
+  gap: 12px;
+}
+
 .stale-btn {
-  width: 100%;
+  flex: 1;
   padding: 14px 0;
   border-radius: 14px;
   font-size: 15px;
@@ -220,9 +225,15 @@
   border: none;
 }
 
-.stale-btn-abandon {
-  background: #dc2626;
+.stale-btn-resume {
+  background: #111827;
   color: #ffffff;
+}
+
+.stale-btn-abandon {
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
 }
 
 .countdown-ring {
@@ -274,14 +285,40 @@
   margin-top: 8px;
 }
 
-.abandon-btn {
+/* 暂停/放弃按钮 */
+.focus-actions {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  max-width: 280px;
+  margin-top: 16px;
+}
+
+.focus-btn {
+  flex: 1;
+  padding: 12px 0;
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 600;
+  background: #f3f4f6;
+  color: #374151;
+  margin: 0;
+  border: none;
+
+  &:active {
+    opacity: 0.8;
+  }
+}
+
+.focus-btn-primary {
+  background: #111827;
+  color: #ffffff;
+}
+
+.focus-btn-danger {
   background: transparent;
   color: #dc2626;
-  font-size: 14px;
   border: 1px solid #fecaca;
-  padding: 10px 32px;
-  border-radius: 12px;
-  margin: 0;
 
   &:active {
     background: #fef2f2;

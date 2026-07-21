@@ -8,23 +8,27 @@ import { fetchSupplyBalance } from '@/utils/supply'
 import './index.scss'
 
 type Phase = 'select' | 'focusing' | 'completed'
-const BG_TOLERANCE_MS = 5 * 60 * 1000 // 切后台 5 分钟容差
+const BG_TOLERANCE_MS = 5 * 60 * 1000
 
 export default function FocusTimer() {
   const [phase, setPhase] = useState<Phase>('select')
-  const [duration, setDuration] = useState<FocusDuration | null>(null)
-  const [sessionId, setSessionId] = useState<number | null>(null)
-  const [startedAt, setStartedAt] = useState<number | null>(null)
-  const [remaining, setRemaining] = useState(0) // 秒
+  const [duration, setDuration] = useState<FocusDuration | null>(null) // 仅用于显示
+  const [remaining, setRemaining] = useState(0)
   const [equipped, setEquipped] = useState<{ id: number; name: string; imageUrl: string; rarity: string } | null>(null)
   const [todayMinutes, setTodayMinutes] = useState(0)
   const [result, setResult] = useState<{ pointsAwarded: number; status: string } | null>(null)
   const [showLeavePrompt, setShowLeavePrompt] = useState(false)
   const [staleActive, setStaleActive] = useState<{ sessionId: number; duration: number; elapsedSeconds: number } | null>(null)
   const [abandoning, setAbandoning] = useState(false)
+  const [isPaused, setIsPaused] = useState(false)
 
   const tickerRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const backgroundAtRef = useRef<number | null>(null)
+  // 用 ref 存关键值，解决 ticker 闭包捕获旧 state 的问题
+  const startedAtRef = useRef<number | null>(null)
+  const durationRef = useRef<number | null>(null)
+  const pausedRemainingRef = useRef<number>(0)
+  const sessionIdRef = useRef<number | null>(null)
 
   useEffect(() => {
     loadInitial()
@@ -33,7 +37,7 @@ export default function FocusTimer() {
 
   // 切后台检测
   useDidHide(() => {
-    if (phase === 'focusing' && startedAt) {
+    if (phase === 'focusing' && !isPaused && startedAtRef.current) {
       backgroundAtRef.current = Date.now()
     }
   })
@@ -60,7 +64,6 @@ export default function FocusTimer() {
       const [bal, today, activeRes] = await Promise.all([fetchSupplyBalance(), fetchTodayFocus(), fetchActiveFocus()])
       if (bal.equippedItem) setEquipped(bal.equippedItem)
       setTodayMinutes(today.totalMinutes || 0)
-      // 检测是否有遗留的活跃专注（非当前页面持有的 session）
       if (activeRes.active) {
         setStaleActive(activeRes.active)
       }
@@ -69,12 +72,17 @@ export default function FocusTimer() {
     }
   }
 
+  /**
+   * 启动倒计时 ticker——每秒用 ref 计算剩余，不再依赖 state 闭包
+   */
   const startTicker = () => {
     stopTicker()
     tickerRef.current = setInterval(() => {
-      if (!startedAt || !duration) return
-      const elapsedSec = Math.floor((Date.now() - startedAt) / 1000)
-      const totalSec = duration * 60
+      const sa = startedAtRef.current
+      const d = durationRef.current
+      if (!sa || !d) return
+      const elapsedSec = Math.floor((Date.now() - sa) / 1000)
+      const totalSec = d * 60
       const left = Math.max(0, totalSec - elapsedSec)
       setRemaining(left)
       if (left <= 0) {
@@ -84,14 +92,20 @@ export default function FocusTimer() {
     }, 1000)
   }
 
+  /**
+   * 新建专注：调 start API → 设置 ref + state → 切 focusing → 启动 ticker
+   */
   const handleSelect = async (d: FocusDuration) => {
     try {
       Taro.showLoading({ title: '准备中...', mask: true })
       const res = await startFocus(d)
-      setSessionId(res.sessionId)
-      setStartedAt(new Date(res.startedAt).getTime())
+      const sa = new Date(res.startedAt).getTime()
+      sessionIdRef.current = res.sessionId
+      startedAtRef.current = sa
+      durationRef.current = d
       setDuration(d)
       setRemaining(d * 60)
+      setIsPaused(false)
       setPhase('focusing')
       startTicker()
     } catch (err) {
@@ -104,11 +118,15 @@ export default function FocusTimer() {
     }
   }
 
+  /**
+   * 完成专注：停止 ticker → 调 end API
+   */
   const handleComplete = async () => {
-    if (!sessionId) return
+    const sid = sessionIdRef.current
+    if (!sid) return
     stopTicker()
     try {
-      const res = await endFocus(sessionId, 'complete')
+      const res = await endFocus(sid, 'complete')
       setResult({ pointsAwarded: res.pointsAwarded, status: res.status })
       setPhase('completed')
       Taro.showToast({
@@ -119,6 +137,44 @@ export default function FocusTimer() {
     } catch (err) {
       Taro.showToast({ title: '结束失败', icon: 'none' })
     }
+  }
+
+  // ---- 暂停 / 继续 ----
+  const handlePause = () => {
+    stopTicker()
+    pausedRemainingRef.current = remaining
+    setIsPaused(true)
+  }
+
+  const handleResume = () => {
+    if (!durationRef.current) return
+    // 用 pausedRemaining 反推虚拟 startedAt，保持倒计时连续
+    const totalSec = durationRef.current * 60
+    const newStartAt = Date.now() - (totalSec - pausedRemainingRef.current) * 1000
+    startedAtRef.current = newStartAt
+    setRemaining(pausedRemainingRef.current)
+    setIsPaused(false)
+    startTicker()
+  }
+
+  // ---- 遗留 session 处理 ----
+  const handleResumeStale = () => {
+    if (!staleActive) return
+    const sid = staleActive.sessionId
+    const d = staleActive.duration as FocusDuration
+    const totalSec = d * 60
+    const left = Math.max(0, totalSec - staleActive.elapsedSeconds)
+    const sa = Date.now() - staleActive.elapsedSeconds * 1000
+
+    sessionIdRef.current = sid
+    startedAtRef.current = sa
+    durationRef.current = d
+    setDuration(d)
+    setRemaining(left)
+    setIsPaused(false)
+    setStaleActive(null)
+    setPhase('focusing')
+    startTicker()
   }
 
   const handleAbandonStale = async () => {
@@ -138,8 +194,10 @@ export default function FocusTimer() {
     }
   }
 
+  // ---- 专注中放弃 ----
   const handleAbandon = async () => {
-    if (!sessionId) return
+    const sid = sessionIdRef.current
+    if (!sid) return
     try {
       const confirmed = await Taro.showModal({
         title: '放弃本次专注？',
@@ -151,7 +209,7 @@ export default function FocusTimer() {
       if (!confirmed.confirm) return
 
       stopTicker()
-      await endFocus(sessionId, 'abandon')
+      await endFocus(sid, 'abandon')
       Taro.showToast({ title: '已放弃', icon: 'none' })
       Taro.navigateBack()
     } catch (err) {
@@ -191,18 +249,23 @@ export default function FocusTimer() {
               <Text className='stale-emoji'>⏱️</Text>
               <Text className='stale-title'>有一场未结束的专注</Text>
               <Text className='stale-desc'>
-                上次发起了 {staleActive.duration} 分钟专注，已过去 {Math.floor(staleActive.elapsedSeconds / 60)} 分钟，但目前不在专注台页面上。
+                上次发起了 {staleActive.duration} 分钟专注，已过去 {Math.floor(staleActive.elapsedSeconds / 60)} 分钟。
               </Text>
-              <Text className='stale-desc'>需要先结束这场专注才能开启新的。</Text>
+              <Text className='stale-desc'>你可以继续本次专注，或放弃后开启新的。</Text>
               <View className='stale-actions'>
-                <Button
-                  className='stale-btn stale-btn-abandon'
-                  onClick={handleAbandonStale}
-                  loading={abandoning}
-                  disabled={abandoning}
-                >
-                  放弃本次专注
-                </Button>
+                <View className='stale-two-btns'>
+                  <Button className='stale-btn stale-btn-resume' onClick={handleResumeStale}>
+                    继续专注
+                  </Button>
+                  <Button
+                    className='stale-btn stale-btn-abandon'
+                    onClick={handleAbandonStale}
+                    loading={abandoning}
+                    disabled={abandoning}
+                  >
+                    放弃本次专注
+                  </Button>
+                </View>
               </View>
             </View>
           ) : (
@@ -268,13 +331,26 @@ export default function FocusTimer() {
             />
             <View className='ring-inner'>
               <Text className='countdown-time'>{formatTime(remaining)}</Text>
-              <Text className='countdown-label'>{duration} 分钟专注中</Text>
+              <Text className='countdown-label'>
+                {isPaused ? '已暂停' : `${duration} 分钟专注中`}
+              </Text>
             </View>
           </View>
 
-          <Button className='abandon-btn' onClick={handleAbandon}>
-            放弃本次专注
-          </Button>
+          <View className='focus-actions'>
+            {isPaused ? (
+              <Button className='focus-btn focus-btn-primary' onClick={handleResume}>
+                继续专注
+              </Button>
+            ) : (
+              <Button className='focus-btn' onClick={handlePause}>
+                暂停
+              </Button>
+            )}
+            <Button className='focus-btn focus-btn-danger' onClick={handleAbandon}>
+              放弃
+            </Button>
+          </View>
         </View>
       )}
 
