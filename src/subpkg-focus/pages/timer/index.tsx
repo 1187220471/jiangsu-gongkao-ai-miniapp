@@ -1,7 +1,7 @@
 import { View, Text, Button } from '@tarojs/components'
 import Taro, { useDidShow, useDidHide } from '@tarojs/taro'
 import { useState, useEffect, useRef } from 'react'
-import { startFocus, endFocus, fetchTodayFocus, type FocusDuration } from '@/utils/focus'
+import { startFocus, endFocus, fetchTodayFocus, fetchActiveFocus, type FocusDuration } from '@/utils/focus'
 import pandaReading from '@/assets/images/panda-reading-120.png'
 import { getPetImageUrl } from '@/utils/petAssets'
 import { fetchSupplyBalance } from '@/utils/supply'
@@ -20,6 +20,8 @@ export default function FocusTimer() {
   const [todayMinutes, setTodayMinutes] = useState(0)
   const [result, setResult] = useState<{ pointsAwarded: number; status: string } | null>(null)
   const [showLeavePrompt, setShowLeavePrompt] = useState(false)
+  const [staleActive, setStaleActive] = useState<{ sessionId: number; duration: number; elapsedSeconds: number } | null>(null)
+  const [abandoning, setAbandoning] = useState(false)
 
   const tickerRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const backgroundAtRef = useRef<number | null>(null)
@@ -55,9 +57,13 @@ export default function FocusTimer() {
 
   const loadInitial = async () => {
     try {
-      const [bal, today] = await Promise.all([fetchSupplyBalance(), fetchTodayFocus()])
+      const [bal, today, activeRes] = await Promise.all([fetchSupplyBalance(), fetchTodayFocus(), fetchActiveFocus()])
       if (bal.equippedItem) setEquipped(bal.equippedItem)
       setTodayMinutes(today.totalMinutes || 0)
+      // 检测是否有遗留的活跃专注（非当前页面持有的 session）
+      if (activeRes.active) {
+        setStaleActive(activeRes.active)
+      }
     } catch (err) {
       console.error('加载专注页失败:', err)
     }
@@ -115,6 +121,23 @@ export default function FocusTimer() {
     }
   }
 
+  const handleAbandonStale = async () => {
+    if (!staleActive || abandoning) return
+    setAbandoning(true)
+    try {
+      await endFocus(staleActive.sessionId, 'abandon')
+      setStaleActive(null)
+      Taro.showToast({ title: '已放弃上次专注', icon: 'none' })
+    } catch (err) {
+      Taro.showToast({
+        title: err instanceof Error ? err.message : '操作失败',
+        icon: 'none',
+      })
+    } finally {
+      setAbandoning(false)
+    }
+  }
+
   const handleAbandon = async () => {
     if (!sessionId) return
     try {
@@ -163,6 +186,27 @@ export default function FocusTimer() {
     <View className='focus-page'>
       {phase === 'select' && (
         <View className='select-phase'>
+          {staleActive ? (
+            <View className='stale-prompt'>
+              <Text className='stale-emoji'>⏱️</Text>
+              <Text className='stale-title'>有一场未结束的专注</Text>
+              <Text className='stale-desc'>
+                上次发起了 {staleActive.duration} 分钟专注，已过去 {Math.floor(staleActive.elapsedSeconds / 60)} 分钟，但目前不在专注台页面上。
+              </Text>
+              <Text className='stale-desc'>需要先结束这场专注才能开启新的。</Text>
+              <View className='stale-actions'>
+                <Button
+                  className='stale-btn stale-btn-abandon'
+                  onClick={handleAbandonStale}
+                  loading={abandoning}
+                  disabled={abandoning}
+                >
+                  放弃本次专注
+                </Button>
+              </View>
+            </View>
+          ) : (
+            <>
           <Text className='page-title'>选择专注时长</Text>
 
           <View className='mascot-card'>
@@ -199,6 +243,8 @@ export default function FocusTimer() {
           </View>
 
           <Text className='hint-text'>专注期间切后台超过 5 分钟将被提示放弃</Text>
+            </>
+          )}
         </View>
       )}
 

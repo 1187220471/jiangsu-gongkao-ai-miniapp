@@ -48,3 +48,16 @@ export function fetchTodayFocus() {
     url: '/api/focus/today',
   })
 }
+
+export interface ActiveFocusInfo {
+  sessionId: number
+  duration: number
+  startedAt: string
+  elapsedSeconds: number
+}
+
+export function fetchActiveFocus() {
+  return request<{ active: ActiveFocusInfo | null }>({
+    url: '/api/focus/active',
+  })
+}
