@@ -49,6 +49,12 @@ export default defineAppConfig({
         'pages/collection/detail',
       ],
     },
+    {
+      root: 'subpkg-focus',
+      pages: [
+        'pages/timer/index',
+      ],
+    },
   ],
   tabBar: {
     color: '#999999',

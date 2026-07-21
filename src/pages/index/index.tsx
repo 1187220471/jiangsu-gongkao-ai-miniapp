@@ -14,6 +14,7 @@ import type { DailyTaskState } from '../../utils/dailyTask'
 import { fetchSupplyBalance } from '../../utils/supply'
 import { request } from '../../utils/request'
 import { getPetImageUrl } from '../../utils/petAssets'
+import { fetchTodayFocus } from '../../utils/focus'
 
 // 全局登录状态
 interface AuthContextType {
@@ -60,6 +61,7 @@ export default function Index() {
   const [showMascotPicker, setShowMascotPicker] = useState(false)
   const [collectionItems, setCollectionItems] = useState<CollectionItem[]>([])
   const [pickerLoading, setPickerLoading] = useState(false)
+  const [todayFocusMinutes, setTodayFocusMinutes] = useState(0)
 
   // 检查本地登录状态 + 每日任务
   useEffect(() => {
@@ -85,6 +87,13 @@ export default function Index() {
         .catch((err) => console.error('获取学习点失败:', err))
 
       fetchCollection()
+    }
+
+    // 获取今日专注时长
+    if (storedToken) {
+      fetchTodayFocus()
+        .then((data) => setTodayFocusMinutes(data.totalMinutes || 0))
+        .catch((err) => console.error('获取今日专注失败:', err))
     }
   }, [])
 
@@ -148,6 +157,10 @@ export default function Index() {
 
   const handleGoSupply = () => {
     Taro.navigateTo({ url: '/subpkg-supply/pages/draw/index' })
+  }
+
+  const handleGoFocus = () => {
+    Taro.navigateTo({ url: '/subpkg-focus/pages/timer/index' })
   }
 
   const fetchCollection = async () => {
@@ -339,6 +352,21 @@ export default function Index() {
           </View>
           <View className='supply-entry-right'>
             <Text className='supply-entry-points'>{supplyBalance} 点</Text>
+            <Text className='supply-entry-arrow'>→</Text>
+          </View>
+        </View>
+
+        {/* 专注入口 */}
+        <View className='supply-entry' onClick={handleGoFocus}>
+          <View className='supply-entry-left'>
+            <Text className='supply-entry-icon'>⏱️</Text>
+            <View className='supply-entry-info'>
+              <Text className='supply-entry-title'>专注台</Text>
+              <Text className='supply-entry-subtitle'>30/60 分钟专注，赢学习点</Text>
+            </View>
+          </View>
+          <View className='supply-entry-right'>
+            <Text className='supply-entry-points'>今日 {todayFocusMinutes} 分钟</Text>
             <Text className='supply-entry-arrow'>→</Text>
           </View>
         </View>

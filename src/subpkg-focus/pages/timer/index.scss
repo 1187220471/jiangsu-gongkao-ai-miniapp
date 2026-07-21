@@ -1,0 +1,390 @@
+.focus-page {
+  min-height: 100vh;
+  background: #f5f5f5;
+  padding: 24px 16px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* 顶部标题 */
+.page-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 24px;
+  display: block;
+}
+
+/* 萌宠卡片 */
+.mascot-card {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 24px 20px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+}
+
+.mascot-img-wrap {
+  width: 120px;
+  height: 120px;
+  border-radius: 20px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mascot-img {
+  width: 100%;
+  height: 100%;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  image-rendering: pixelated;
+}
+
+.mascot-hint {
+  font-size: 15px;
+  color: #111827;
+  font-weight: 600;
+  display: block;
+}
+
+.today-stat {
+  font-size: 12px;
+  color: #9ca3af;
+  display: block;
+}
+
+/* 时长选择 */
+.duration-cards {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.duration-card {
+  flex: 1;
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 28px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  position: relative;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+  transition: all 0.15s;
+
+  &:active {
+    opacity: 0.85;
+    transform: scale(0.98);
+  }
+}
+
+.duration-card-primary {
+  background: #111827;
+}
+
+.duration-num {
+  font-size: 48px;
+  font-weight: 800;
+  color: #111827;
+  line-height: 1;
+  display: block;
+}
+
+.duration-card-primary .duration-num {
+  color: #ffffff;
+}
+
+.duration-unit {
+  font-size: 14px;
+  color: #6b7280;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.duration-card-primary .duration-unit {
+  color: #9ca3af;
+}
+
+.reward-tag {
+  background: #eff6ff;
+  border-radius: 12px;
+  padding: 6px 12px;
+}
+
+.reward-tag-primary {
+  background: #3b82f6;
+}
+
+.reward-text {
+  font-size: 12px;
+  font-weight: 600;
+  color: #3b82f6;
+  display: block;
+}
+
+.reward-tag-primary .reward-text {
+  color: #ffffff;
+}
+
+.hint-text {
+  font-size: 12px;
+  color: #9ca3af;
+  text-align: center;
+  display: block;
+  margin-top: 8px;
+}
+
+/* 专注态 */
+.focusing-phase {
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 60px;
+}
+
+.focus-mascot-wrap {
+  margin-bottom: 32px;
+}
+
+.focus-mascot {
+  width: 140px;
+  height: 140px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  image-rendering: pixelated;
+  border-radius: 28px;
+}
+
+.countdown-ring {
+  width: 240px;
+  height: 240px;
+  position: relative;
+  margin-bottom: 48px;
+}
+
+.ring-bg {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+}
+
+.ring-fill {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+}
+
+.ring-inner {
+  position: absolute;
+  inset: 12px;
+  border-radius: 50%;
+  background: #f5f5f5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.countdown-time {
+  font-size: 56px;
+  font-weight: 800;
+  color: #111827;
+  font-family: 'SF Mono', 'Monaco', monospace;
+  letter-spacing: -2px;
+  line-height: 1;
+  display: block;
+}
+
+.countdown-label {
+  font-size: 13px;
+  color: #6b7280;
+  display: block;
+  margin-top: 8px;
+}
+
+.abandon-btn {
+  background: transparent;
+  color: #dc2626;
+  font-size: 14px;
+  border: 1px solid #fecaca;
+  padding: 10px 32px;
+  border-radius: 12px;
+  margin: 0;
+
+  &:active {
+    background: #fef2f2;
+  }
+}
+
+/* 完成态 */
+.completed-phase {
+  width: 100%;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.completed-card {
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 40px 24px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+}
+
+.completed-emoji {
+  font-size: 64px;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.completed-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #111827;
+  display: block;
+}
+
+.completed-points {
+  font-size: 32px;
+  font-weight: 800;
+  color: #3b82f6;
+  display: block;
+  margin: 8px 0;
+}
+
+.completed-hint {
+  font-size: 13px;
+  color: #9ca3af;
+  display: block;
+  margin-bottom: 20px;
+}
+
+.completed-btn {
+  background: #111827;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 14px;
+  border: none;
+  padding: 12px 0;
+  width: 100%;
+  margin: 0;
+}
+
+/* 离开提示 */
+.leave-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+}
+
+.leave-modal {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 24px;
+  width: 100%;
+}
+
+.leave-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: #111827;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.leave-desc {
+  font-size: 14px;
+  color: #6b7280;
+  display: block;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.leave-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.leave-btn {
+  flex: 1;
+  padding: 12px 0;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.leave-btn-cancel {
+  background: #f3f4f6;
+}
+
+.leave-btn-confirm {
+  background: #dc2626;
+}
+
+.leave-btn-text {
+  font-size: 14px;
+  font-weight: 600;
+  color: #111827;
+  display: block;
+}
+
+.leave-btn-text-white {
+  color: #ffffff;
+}
+
+/* 稀有萌宠蓝色细闪动效 */
+.rare-shimmer {
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    border: 2px solid transparent;
+    animation: rareShimmer 1.6s ease-in-out infinite;
+    pointer-events: none;
+  }
+}
+
+@keyframes rareShimmer {
+  0%, 100% {
+    border-color: rgba(59, 130, 246, 0.35);
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.15);
+  }
+  50% {
+    border-color: rgba(59, 130, 246, 0.85);
+    box-shadow: 0 0 12px 2px rgba(59, 130, 246, 0.25);
+  }
+}
