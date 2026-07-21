@@ -14,7 +14,7 @@ export async function fetchSupplyBalance() {
   return request<{
     balance: number
     freeDrawUsedToday?: boolean
-    equippedItem: { id: number; name: string; imageUrl: string } | null
+    equippedItem: { id: number; name: string; imageUrl: string; rarity: string } | null
   }>({
     url: '/api/supply/balance',
   })

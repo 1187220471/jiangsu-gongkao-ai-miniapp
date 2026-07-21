@@ -76,6 +76,45 @@
   flex-shrink: 0;
 }
 
+.hero-mascot-wrap {
+  width: 100px;
+  height: 100px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+
+  &:active {
+    opacity: 0.85;
+    transform: scale(0.96);
+  }
+}
+
+/* 稀有萌宠蓝色细闪动效 */
+.rare-shimmer {
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 20px;
+    border: 2px solid transparent;
+    animation: rareShimmer 1.6s ease-in-out infinite;
+  }
+}
+
+@keyframes rareShimmer {
+  0%, 100% {
+    border-color: rgba(59, 130, 246, 0.35);
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.15);
+  }
+  50% {
+    border-color: rgba(59, 130, 246, 0.85);
+    box-shadow: 0 0 12px 2px rgba(59, 130, 246, 0.25);
+  }
+}
+
 .hero-info {
   display: flex;
   flex-direction: column;
@@ -429,4 +468,114 @@
   display: block;
   margin-top: 14px;
   text-align: center;
+}
+
+/* 萌宠装备选择器弹层 */
+.mascot-picker-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1000;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.mascot-picker {
+  background: #ffffff;
+  width: 100%;
+  border-radius: 20px 20px 0 0;
+  padding: 24px 20px 32px;
+}
+
+.mascot-picker-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.mascot-picker-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.mascot-picker-close {
+  font-size: 18px;
+  color: #9ca3af;
+  padding: 4px;
+}
+
+.mascot-picker-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.mascot-picker-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 6px;
+  border-radius: 14px;
+  background: #f9fafb;
+  position: relative;
+  transition: all 0.15s;
+
+  &:active {
+    opacity: 0.8;
+    transform: scale(0.96);
+  }
+}
+
+.mascot-picker-item-active {
+  background: #eff6ff;
+  border: 1px solid #3b82f6;
+}
+
+.mascot-picker-item-rare {
+  animation: rareShimmer 1.6s ease-in-out infinite;
+  border-radius: 14px;
+}
+
+.mascot-picker-img {
+  width: 56px;
+  height: 56px;
+  image-rendering: pixelated;
+  display: block;
+}
+
+.mascot-picker-name {
+  font-size: 11px;
+  color: #374151;
+  text-align: center;
+  display: block;
+  line-height: 1.2;
+}
+
+.mascot-picker-badge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  font-size: 9px;
+  color: #ffffff;
+  background: #3b82f6;
+  padding: 2px 5px;
+  border-radius: 8px;
+  line-height: 1;
+}
+
+.mascot-picker-empty {
+  text-align: center;
+  padding: 24px 0;
+}
+
+.mascot-picker-empty-text {
+  font-size: 13px;
+  color: #9ca3af;
 }

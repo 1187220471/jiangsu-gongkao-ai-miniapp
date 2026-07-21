@@ -10,8 +10,10 @@ import pandaReading from '../../assets/images/panda-reading-120.png'
 import pandaWriting from '../../assets/images/panda-writing-120.png'
 import pandaThumbsup from '../../assets/images/panda-thumbsup-120.png'
 import { getDailyTask, getTaskHint, getMascotStage, setDailyTaskTarget } from '../../utils/dailyTask'
-import type { DailyTaskState, MascotStage } from '../../utils/dailyTask'
+import type { DailyTaskState } from '../../utils/dailyTask'
 import { fetchSupplyBalance } from '../../utils/supply'
+import { request } from '../../utils/request'
+import { getPetImageUrl } from '../../utils/petAssets'
 
 // 全局登录状态
 interface AuthContextType {
@@ -36,6 +38,16 @@ export function useAuth() {
 
 const TARGET_PRESETS = [1, 3, 5, 10]
 
+interface CollectionItem {
+  id: number
+  name: string
+  rarity: string
+  imageUrl: string
+  collected: boolean
+  isEquipped: boolean
+  obtainedAt: string | null
+}
+
 export default function Index() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [user, setUser] = useState<any>(null)
@@ -44,6 +56,10 @@ export default function Index() {
   const [dailyTask, setDailyTask] = useState<DailyTaskState>({ count: 0, target: 3, completed: false, date: '', progress: 0 })
   const [showTargetPicker, setShowTargetPicker] = useState(false)
   const [supplyBalance, setSupplyBalance] = useState(0)
+  const [equippedItem, setEquippedItem] = useState<{ id: number; name: string; imageUrl: string; rarity: string } | null>(null)
+  const [showMascotPicker, setShowMascotPicker] = useState(false)
+  const [collectionItems, setCollectionItems] = useState<CollectionItem[]>([])
+  const [pickerLoading, setPickerLoading] = useState(false)
 
   // 检查本地登录状态 + 每日任务
   useEffect(() => {
@@ -57,11 +73,18 @@ export default function Index() {
     setDailyTask(getDailyTask())
     setLoading(false)
 
-    // 获取学习点余额
+    // 获取学习点余额和已装备萌宠
     if (storedToken) {
       fetchSupplyBalance()
-        .then((data) => setSupplyBalance(data.balance))
+        .then((data) => {
+          setSupplyBalance(data.balance)
+          if (data.equippedItem) {
+            setEquippedItem(data.equippedItem)
+          }
+        })
         .catch((err) => console.error('获取学习点失败:', err))
+
+      fetchCollection()
     }
   }, [])
 
@@ -125,6 +148,55 @@ export default function Index() {
 
   const handleGoSupply = () => {
     Taro.navigateTo({ url: '/subpkg-supply/pages/draw/index' })
+  }
+
+  const fetchCollection = async () => {
+    try {
+      const data = await request<{ items: CollectionItem[] }>({
+        url: '/api/supply/collection',
+      })
+      setCollectionItems(data.items || [])
+    } catch (err) {
+      console.error('获取图鉴失败:', err)
+    }
+  }
+
+  const handleEquip = async (itemId: number | null) => {
+    if (pickerLoading) return
+    setPickerLoading(true)
+    try {
+      await request({
+        url: '/api/supply/collection/equip',
+        method: 'POST',
+        data: { itemId },
+      })
+      const data = await fetchSupplyBalance()
+      setSupplyBalance(data.balance)
+      setEquippedItem(data.equippedItem || null)
+      setShowMascotPicker(false)
+      Taro.showToast({
+        title: itemId ? '已切换展示伙伴' : '已恢复默认熊猫',
+        icon: 'none',
+      })
+      // 同步更新 collection 中的 isEquipped
+      setCollectionItems((prev) =>
+        prev.map((item) => ({ ...item, isEquipped: item.id === itemId }))
+      )
+    } catch (err) {
+      Taro.showToast({
+        title: err instanceof Error ? err.message : '操作失败',
+        icon: 'none',
+      })
+    } finally {
+      setPickerLoading(false)
+    }
+  }
+
+  const handleOpenMascotPicker = () => {
+    setShowMascotPicker(true)
+    if (collectionItems.length === 0 && token) {
+      fetchCollection()
+    }
   }
 
   const handleSetTarget = (n: number) => {
@@ -211,7 +283,20 @@ export default function Index() {
           </View>
 
           <View className='hero-body'>
-            <Image className='hero-mascot' src={pandaMascot} mode='aspectFit' />
+            <View
+              className={`hero-mascot-wrap ${equippedItem?.rarity === 'rare' ? 'rare-shimmer' : ''}`}
+              onClick={handleOpenMascotPicker}
+            >
+              {equippedItem ? (
+                <Image
+                  className='hero-mascot'
+                  src={getPetImageUrl(equippedItem.imageUrl)}
+                  mode='aspectFit'
+                />
+              ) : (
+                <Image className='hero-mascot' src={pandaMascot} mode='aspectFit' />
+              )}
+            </View>
             <View className='hero-info'>
               <View className='streak-badge'>
                 <Text className='streak-text'>连续打卡 1 天</Text>
@@ -322,6 +407,59 @@ export default function Index() {
                 ))}
               </View>
               <Text className='target-picker-hint'>预设次数，点击即生效</Text>
+            </View>
+          </View>
+        )}
+
+        {/* 萌宠装备选择器弹层 */}
+        {showMascotPicker && (
+          <View className='mascot-picker-overlay' onClick={() => setShowMascotPicker(false)}>
+            <View className='mascot-picker' onClick={(e) => e.stopPropagation()}>
+              <View className='mascot-picker-header'>
+                <Text className='mascot-picker-title'>选择在首页展示的伙伴</Text>
+                <Text className='mascot-picker-close' onClick={() => setShowMascotPicker(false)}>✕</Text>
+              </View>
+
+              <View className='mascot-picker-grid'>
+                {/* 默认熊猫 */}
+                <View
+                  className={`mascot-picker-item ${!equippedItem ? 'mascot-picker-item-active' : ''}`}
+                  onClick={() => handleEquip(null)}
+                >
+                  <Image
+                    className='mascot-picker-img'
+                    src={pandaReading}
+                    mode='aspectFit'
+                  />
+                  <Text className='mascot-picker-name'>默认熊猫</Text>
+                  {!equippedItem && <Text className='mascot-picker-badge'>展示中</Text>}
+                </View>
+
+                {/* 已收集萌宠 */}
+                {collectionItems
+                  .filter((item) => item.collected)
+                  .map((item) => (
+                    <View
+                      key={item.id}
+                      className={`mascot-picker-item ${item.isEquipped ? 'mascot-picker-item-active' : ''} ${item.rarity === 'rare' ? 'mascot-picker-item-rare' : ''}`}
+                      onClick={() => handleEquip(item.id)}
+                    >
+                      <Image
+                        className='mascot-picker-img'
+                        src={getPetImageUrl(item.imageUrl)}
+                        mode='aspectFit'
+                      />
+                      <Text className='mascot-picker-name'>{item.name}</Text>
+                      {item.isEquipped && <Text className='mascot-picker-badge'>展示中</Text>}
+                    </View>
+                  ))}
+              </View>
+
+              {collectionItems.filter((i) => i.collected).length === 0 && (
+                <View className='mascot-picker-empty'>
+                  <Text className='mascot-picker-empty-text'>还没有收集到萌宠，去补给站抽取吧</Text>
+                </View>
+              )}
             </View>
           </View>
         )}
