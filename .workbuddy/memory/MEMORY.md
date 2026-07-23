@@ -10,7 +10,7 @@ _小程序端（Taro + 微信）的技术细节、踩坑记录、开发进度。
 - **路径**：`/Users/yier/Documents/daijinli网页版/daijinli-miniapp/`
 - **框架**：Taro 3.x + React 18 + TypeScript + Sass
 - **编译目标**：微信小程序
-- **后端**：复用 `daijinli-web` 的 Next.js API（`https://www.mianshidati.xyz`）
+- **后端**：复用 Web 端 Next.js API（`https://www.mianshidati.xyz`）
 
 ---
 
