@@ -37,6 +37,7 @@ export default function CollectionDetail() {
   const [loading, setLoading] = useState(true)
   const [equipping, setEquipping] = useState(false)
   const [sharing, setSharing] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     fetchDetail()
@@ -45,6 +46,7 @@ export default function CollectionDetail() {
 
   const fetchDetail = async () => {
     setLoading(true)
+    setError(null)
     try {
       const data = await request<CollectionResponse>({ url: `/api/supply/collection?category=${category}` })
       const found = data.items.find((i) => i.id === id)
@@ -54,8 +56,10 @@ export default function CollectionDetail() {
         Taro.showToast({ title: '物品不存在', icon: 'none' })
       }
     } catch (err) {
+      const msg = err instanceof Error ? err.message : '加载失败'
+      setError(msg)
       Taro.showToast({
-        title: err instanceof Error ? err.message : '加载失败',
+        title: msg,
         icon: 'none',
       })
     } finally {
@@ -125,6 +129,16 @@ export default function CollectionDetail() {
     return (
       <View className='collection-detail-page'>
         <Text className='loading-text'>加载中...</Text>
+      </View>
+    )
+  }
+
+  if (error) {
+    return (
+      <View className='collection-detail-page'>
+        <Text className='loading-text' style={{ color: 'red' }}>加载错误: {error}</Text>
+        <Text className='loading-text' style={{ fontSize: 12 }}>ID: {id}, Category: {category}</Text>
+        <Button className='retry-btn' onClick={() => fetchDetail()}>重试</Button>
       </View>
     )
   }
