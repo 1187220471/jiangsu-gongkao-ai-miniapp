@@ -4,6 +4,39 @@
   padding: 20px 16px 40px;
 }
 
+/* ============ 主题切换 Tab ============ */
+.theme-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+
+  .theme-tab {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 12px 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #6b7280;
+    border: 2px solid transparent;
+    transition: all 0.2s ease;
+
+    .theme-tab-label {
+      font-size: 13px;
+    }
+
+    &.active {
+      background: #111827;
+      color: #ffffff;
+      border-color: #111827;
+    }
+  }
+}
+
 /* ============ 状态栏 ============ */
 .status-bar {
   display: flex;

@@ -63,7 +63,13 @@ export async function fetchAllCollection() {
   })
 }
 
-export async function drawItem(source: 'free' | 'paid', category: SupplyCategory = 'pixelPet') {
+export type DrawSource = 'free' | 'paid' | 'share'
+
+export async function drawItem(
+  source: DrawSource,
+  category: SupplyCategory = 'pixelPet',
+  shareToken?: string
+) {
   return request<{
     item: {
       id: number
@@ -75,33 +81,28 @@ export async function drawItem(source: 'free' | 'paid', category: SupplyCategory
     isRepeat: boolean
     repeatPoints: number
     balance: number
-    source: 'free' | 'paid'
+    source: DrawSource
   }>({
     url: '/api/supply/draw',
     method: 'POST',
-    data: { source, category },
+    data: { source, category, shareToken },
   })
 }
 
 /**
- * ���享补给品，获得奖励
+ * 创建带一次性免费抽令牌的分享卡
  */
-export async function shareItem(itemId: number, source: 'collection' | 'focus' | 'answer' = 'collection') {
+export async function shareItem(itemId: number) {
   return request<{
     success: boolean
-    shared: boolean
-    sharerId?: string
-    reward: {
-      type: 'points'
-      amount: number
-      description: string
-    }
+    token: string
+    item: { id: number; name: string; category: string }
     shareCountToday: number
     remainingShares: number
   }>({
     url: '/api/supply/share',
     method: 'POST',
-    data: { itemId, source },
+    data: { itemId },
   })
 }
 

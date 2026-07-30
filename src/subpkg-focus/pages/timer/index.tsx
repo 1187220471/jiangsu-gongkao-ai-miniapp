@@ -3,7 +3,7 @@ import Taro, { useDidShow, useDidHide } from '@tarojs/taro'
 import { useState, useEffect, useRef } from 'react'
 import { startFocus, endFocus, fetchTodayFocus, fetchActiveFocus, type FocusDuration } from '@/utils/focus'
 import pandaReading from '@/assets/images/panda-reading-120.png'
-import { getPetImageUrl } from '@/utils/petAssets'
+import { getCollectionImageUrl } from '@/utils/collectionAssets'
 import { fetchSupplyBalance } from '@/utils/supply'
 import './index.scss'
 
@@ -275,7 +275,7 @@ export default function FocusTimer() {
           <View className='mascot-card'>
             {equipped ? (
               <View className={`mascot-img-wrap ${equipped.rarity === 'rare' ? 'rare-shimmer' : ''}`}>
-                <View className='mascot-img' style={{ backgroundImage: `url(${getPetImageUrl(equipped.imageUrl)})` }} />
+                <View className='mascot-img' style={{ backgroundImage: `url(${getCollectionImageUrl(equipped.imageUrl)})` }} />
               </View>
             ) : (
               <View className='mascot-img-wrap'>
@@ -315,7 +315,7 @@ export default function FocusTimer() {
         <View className='focusing-phase'>
           <View className='focus-mascot-wrap'>
             {equipped ? (
-              <View className={`focus-mascot ${equipped.rarity === 'rare' ? 'rare-shimmer' : ''}`} style={{ backgroundImage: `url(${getPetImageUrl(equipped.imageUrl)})` }} />
+              <View className={`focus-mascot ${equipped.rarity === 'rare' ? 'rare-shimmer' : ''}`} style={{ backgroundImage: `url(${getCollectionImageUrl(equipped.imageUrl)})` }} />
             ) : (
               <View className='focus-mascot' style={{ backgroundImage: `url(${pandaReading})` }} />
             )}

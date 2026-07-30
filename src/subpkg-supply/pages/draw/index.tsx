@@ -1,8 +1,9 @@
 import { View, Text, Image, Button, ScrollView } from '@tarojs/components'
-import Taro from '@tarojs/taro'
+import Taro, { useRouter } from '@tarojs/taro'
 import { useState, useEffect, useRef } from 'react'
-import { request } from '@/utils/request'
-import { getPetImageUrl } from '@/utils/petAssets'
+import { getCollectionImageUrl } from '@/utils/collectionAssets'
+import { drawItem, fetchCollection, fetchSupplyBalance } from '@/utils/supply'
+import { THEME_META, type SupplyCategory } from '@/utils/theme'
 import capsuleImage from '@/assets/supply/capsule-160.png'
 import './index.scss'
 
@@ -19,7 +20,7 @@ interface DrawResponse {
   isRepeat: boolean
   repeatPoints: number
   balance: number
-  source: 'free' | 'paid'
+  source: 'free' | 'paid' | 'share'
 }
 
 interface PoolItem {
@@ -30,25 +31,19 @@ interface PoolItem {
   collected: boolean
 }
 
-interface CollectionResponse {
-  items: PoolItem[]
-  total: number
-  collected: number
-}
-
 const RARITY_LABELS: Record<string, string> = {
   common: '普通',
   rare: '稀有',
 }
 
-const RARITY_COLORS: Record<string, string> = {
-  common: '#6b7280',
-  rare: '#3b82f6',
-}
-
 const LIGHT_COUNT = 7
 
 export default function SupplyDraw() {
+  const router = useRouter()
+  const initialShareToken = router.params.shareToken
+  const initialCategory = (router.params.category as SupplyCategory) || 'pixelPet'
+  const [category, setCategory] = useState<SupplyCategory>(initialCategory)
+  const [shareToken, setShareToken] = useState<string | undefined>(initialShareToken)
   const [balance, setBalance] = useState(0)
   const [pool, setPool] = useState<PoolItem[]>([])
   const [stats, setStats] = useState({ total: 0, collected: 0 })
@@ -65,7 +60,7 @@ export default function SupplyDraw() {
     fetchData()
     return () => stopReel()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [category])
 
   const stopReel = () => {
     if (reelTimer.current) {
@@ -86,13 +81,18 @@ export default function SupplyDraw() {
   const fetchData = async () => {
     try {
       const [balanceData, collectionData] = await Promise.all([
-        request<{ balance: number; freeDrawUsedToday?: boolean }>({ url: '/api/supply/balance' }),
-        request<CollectionResponse>({ url: '/api/supply/collection' }),
+        fetchSupplyBalance(),
+        fetchCollection(category),
       ])
       setBalance(balanceData.balance)
       setFreeUsed(!!balanceData.freeDrawUsedToday)
-      setPool(collectionData.items)
-      setStats({ total: collectionData.total, collected: collectionData.collected })
+      // 兜底客户端过滤
+      const filtered = collectionData.items.filter((item: PoolItem & { category?: string }) => {
+        if (!item.category) return category === 'pixelPet'
+        return item.category === category
+      })
+      setPool(filtered as PoolItem[])
+      setStats({ total: filtered.length, collected: filtered.filter((i: PoolItem) => i.collected).length })
     } catch (err) {
       console.error('加载补给站失败:', err)
     }
@@ -101,7 +101,7 @@ export default function SupplyDraw() {
   const handleDraw = async () => {
     if (loading || animating) return
 
-    const source: 'free' | 'paid' = freeUsed ? 'paid' : 'free'
+    const source: 'free' | 'paid' | 'share' = shareToken ? 'share' : freeUsed ? 'paid' : 'free'
 
     if (source === 'paid' && balance < 3) {
       Taro.showToast({ title: '学习点不足，去答题赚学习点吧', icon: 'none' })
@@ -115,13 +115,8 @@ export default function SupplyDraw() {
     startReel()
 
     try {
-      const data = await request<DrawResponse>({
-        url: '/api/supply/draw',
-        method: 'POST',
-        data: { source },
-      })
+      const data = await drawItem(source, category, shareToken)
 
-      // 三个滚筒错开停止：1.0s / 1.3s / 1.6s
       setOutcome(data)
       setTimeout(() => setStoppedCount(1), 1000)
       setTimeout(() => setStoppedCount(2), 1300)
@@ -133,9 +128,11 @@ export default function SupplyDraw() {
         if (source === 'free') {
           setFreeUsed(true)
         }
+        if (source === 'share') {
+          setShareToken(undefined)
+        }
         setShowModal(true)
 
-        // 刷新奖池收集状态与服务端免费次数
         fetchData()
       }, 1600)
     } catch (err) {
@@ -144,7 +141,6 @@ export default function SupplyDraw() {
       setStoppedCount(0)
       const message = err instanceof Error ? err.message : '抽奖失败'
 
-      // 错误自愈：服务端告知今日免费已用完时，同步本地状态（兼容线上旧版 balance 接口）
       if (source === 'free' && message.includes('免费')) {
         setFreeUsed(true)
         fetchData()
@@ -171,41 +167,46 @@ export default function SupplyDraw() {
   }
 
   const goToCollection = () => {
-    Taro.navigateTo({ url: '/subpkg-supply/pages/collection/index' })
+    Taro.navigateTo({ url: `/subpkg-supply/pages/collection/index?category=${category}` })
   }
 
-  const getPetImage = (item: DrawResult | PoolItem) => getPetImageUrl(item.imageUrl)
+  const switchTheme = (c: SupplyCategory) => {
+    if (c === category) return
+    setCategory(c)
+  }
 
-  const ctaText = freeUsed ? '3 学习点抽一次' : '免费抽一次'
-  const ctaDisabled = loading || animating || (freeUsed && balance < 3)
+  const getCardImage = (item: DrawResult | PoolItem) => getCollectionImageUrl(item.imageUrl)
+
+  const ctaText = shareToken ? '好友赠送免费抽' : freeUsed ? '3 学习点抽一次' : '免费抽一次'
+  const ctaDisabled = loading || animating || (!shareToken && freeUsed && balance < 3)
+
+  const theme = THEME_META[category]
+  const rareColor = theme.rareColor
+  const commonColor = '#6b7280'
 
   const commonItems = pool.filter((i) => i.rarity === 'common')
   const rareItems = pool.filter((i) => i.rarity === 'rare')
 
-  // 第 i 个滚筒视窗的内容
   const renderReel = (i: number) => {
-    // 滚动中且该视窗未停止：显示切换的萌宠
     if (animating && i >= stoppedCount && pool.length > 0) {
       const item = pool[(reelIndex + i * 5) % pool.length]
       return (
         <Image
           className='reel-img spinning'
-          src={getPetImage(item)}
+          src={getCardImage(item)}
           mode='aspectFit'
         />
       )
     }
-    // 有结果：显示中奖萌宠
     if (outcome) {
       return (
         <Image
           className='reel-img'
-          src={getPetImage(outcome.item)}
+          src={getCardImage(outcome.item)}
           mode='aspectFit'
         />
       )
     }
-    // 默认：胶囊
     return (
       <Image className='reel-img capsule' src={capsuleImage} mode='aspectFit' />
     )
@@ -215,7 +216,7 @@ export default function SupplyDraw() {
     <View className='pool-section' key={groupName}>
       <View className='pool-section-header'>
         <Text className='pool-section-title'>{groupName}</Text>
-        <Text className='pool-section-count'>{items.length} 只</Text>
+        <Text className='pool-section-count'>{items.length} {theme.unitLabel}</Text>
       </View>
       <ScrollView className='pool-row' scrollX enhanced showsHorizontalScrollIndicator={false}>
         {items.map((item) => (
@@ -226,7 +227,7 @@ export default function SupplyDraw() {
             {item.collected ? (
               <Image
                 className='pool-card-img'
-                src={getPetImage(item)}
+                src={getCardImage(item)}
                 mode='aspectFit'
               />
             ) : (
@@ -237,7 +238,7 @@ export default function SupplyDraw() {
             </Text>
             <Text
               className='pool-card-rarity'
-              style={{ color: item.collected ? RARITY_COLORS[item.rarity] : '#d1d5db' }}
+              style={{ color: item.collected ? (item.rarity === 'rare' ? rareColor : commonColor) : '#d1d5db' }}
             >
               {item.collected ? RARITY_LABELS[item.rarity] : '???'}
             </Text>
@@ -249,6 +250,20 @@ export default function SupplyDraw() {
 
   return (
     <ScrollView className='supply-draw-page' scrollY>
+      {/* 主题切换 Tab */}
+      <View className='theme-tabs'>
+        {(['pixelPet', 'nbaStar'] as SupplyCategory[]).map((c) => (
+          <View
+            key={c}
+            className={`theme-tab ${category === c ? 'active' : ''}`}
+            onClick={() => switchTheme(c)}
+          >
+            <Text>{THEME_META[c].icon}</Text>
+            <Text className='theme-tab-label'>{THEME_META[c].label}</Text>
+          </View>
+        ))}
+      </View>
+
       {/* 状态栏 */}
       <View className='status-bar'>
         <View className='status-card'>
@@ -256,16 +271,15 @@ export default function SupplyDraw() {
           <Text className='status-value'>💎 {balance}</Text>
         </View>
         <View className='status-card'>
-          <Text className='status-label'>今日免费</Text>
-          <Text className={`status-value ${freeUsed ? 'used' : ''}`}>
-            {freeUsed ? '已用完' : '剩余 1 次'}
+          <Text className='status-label'>{shareToken ? '好友赠送' : '今日免费'}</Text>
+          <Text className={`status-value ${freeUsed && !shareToken ? 'used' : ''}`}>
+            {shareToken ? '独立 1 次' : freeUsed ? '已用完' : '剩余 1 次'}
           </Text>
         </View>
       </View>
 
       {/* 抽卡机 */}
       <View className='machine'>
-        {/* 顶部灯泡 */}
         <View className='machine-lights'>
           {Array.from({ length: LIGHT_COUNT }).map((_, i) => (
             <View
@@ -276,9 +290,8 @@ export default function SupplyDraw() {
           ))}
         </View>
 
-        <Text className='machine-title'>像素补给站</Text>
+        <Text className='machine-title'>{theme.drawTitle}</Text>
 
-        {/* 滚筒 + 拉杆 */}
         <View className='machine-body'>
           <View className='reel-row'>
             {[0, 1, 2].map((i) => (
@@ -296,22 +309,20 @@ export default function SupplyDraw() {
           </View>
         </View>
 
-        {/* 概率贴纸 */}
         <View className='machine-sticker'>
-          <Text className='sticker-dot' style={{ backgroundColor: RARITY_COLORS.common }} />
+          <Text className='sticker-dot' style={{ backgroundColor: commonColor }} />
           <Text className='sticker-text'>普通 80%</Text>
           <Text className='sticker-divider'>·</Text>
-          <Text className='sticker-dot' style={{ backgroundColor: RARITY_COLORS.rare }} />
+          <Text className='sticker-dot' style={{ backgroundColor: rareColor }} />
           <Text className='sticker-text'>稀有 20%</Text>
         </View>
 
-        {/* 出卡口 */}
         <View className='machine-slot' />
       </View>
 
       {/* 抽卡按钮 */}
       <Button
-        className={`draw-btn ${freeUsed && balance < 3 ? 'disabled' : ''}`}
+        className={`draw-btn ${!shareToken && freeUsed && balance < 3 ? 'disabled' : ''}`}
         onClick={handleDraw}
         disabled={ctaDisabled}
       >
@@ -322,7 +333,7 @@ export default function SupplyDraw() {
       <View className='bag-entry' onClick={goToCollection}>
         <View className='bag-entry-left'>
           <Text className='bag-entry-title'>我的图鉴</Text>
-          <Text className='bag-entry-desc'>收集全部像素萌宠</Text>
+          <Text className='bag-entry-desc'>{theme.collectionDesc}</Text>
         </View>
         <View className='bag-entry-right'>
           <Text className='bag-entry-count'>已收集 {stats.collected}/{stats.total}</Text>
@@ -332,8 +343,8 @@ export default function SupplyDraw() {
 
       {/* 奖池分组 */}
       <View className='pool-area'>
-        {renderPoolRow(commonItems, '常驻伙伴')}
-        {renderPoolRow(rareItems, '珍稀伙伴')}
+        {renderPoolRow(commonItems, theme.poolCommonLabel)}
+        {renderPoolRow(rareItems, theme.poolRareLabel)}
       </View>
 
       {/* 结果弹窗 */}
@@ -345,13 +356,13 @@ export default function SupplyDraw() {
             </Text>
             <Image
               className='result-img'
-              src={getPetImage(outcome.item)}
+              src={getCardImage(outcome.item)}
               mode='aspectFit'
             />
             <Text className='result-name'>{outcome.item.name}</Text>
             <Text
               className='result-rarity'
-              style={{ color: RARITY_COLORS[outcome.item.rarity] }}
+              style={{ color: outcome.item.rarity === 'rare' ? rareColor : commonColor }}
             >
               {RARITY_LABELS[outcome.item.rarity]}
             </Text>

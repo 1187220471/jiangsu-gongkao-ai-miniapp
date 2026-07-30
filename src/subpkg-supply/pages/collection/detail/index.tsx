@@ -1,6 +1,6 @@
 import { View, Text, Image, Button } from '@tarojs/components'
-import Taro, { useRouter } from '@tarojs/taro'
-import { useState, useEffect } from 'react'
+import Taro, { useRouter, useShareAppMessage } from '@tarojs/taro'
+import { useState, useEffect, useRef } from 'react'
 import { request } from '@/utils/request'
 import { getCollectionImageUrl } from '@/utils/collectionAssets'
 import { THEME_META, type SupplyCategory } from '@/utils/theme'
@@ -37,7 +37,7 @@ export default function CollectionDetail() {
   const [loading, setLoading] = useState(true)
   const [equipping, setEquipping] = useState(false)
   const [sharing, setSharing] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const shareTokenRef = useRef<string | null>(null)
 
   useEffect(() => {
     fetchDetail()
@@ -46,7 +46,6 @@ export default function CollectionDetail() {
 
   const fetchDetail = async () => {
     setLoading(true)
-    setError(null)
     try {
       const data = await request<CollectionResponse>({ url: `/api/supply/collection?category=${category}` })
       const found = data.items.find((i) => i.id === id)
@@ -56,10 +55,8 @@ export default function CollectionDetail() {
         Taro.showToast({ title: '物品不存在', icon: 'none' })
       }
     } catch (err) {
-      const msg = err instanceof Error ? err.message : '加载失败'
-      setError(msg)
       Taro.showToast({
-        title: msg,
+        title: err instanceof Error ? err.message : '加载失败',
         icon: 'none',
       })
     } finally {
@@ -94,30 +91,34 @@ export default function CollectionDetail() {
     }
   }
 
-  const handleShare = async () => {
-    if (!item || sharing) return
-
-    setSharing(true)
-    try {
-      const result = await shareItem(item.id, 'collection')
-
-      // 触发微信分享
-      Taro.showModal({
-        title: '分享成功',
-        content: result.reward.description + '\n今日已分享 ' + result.shareCountToday + ' 次',
-        showCancel: false,
-      })
-    } catch (err) {
-      Taro.showToast({
-        title: err instanceof Error ? err.message : '分享失败',
-        icon: 'none',
-      })
-    } finally {
-      setSharing(false)
+  useShareAppMessage(() => {
+    if (!item) {
+      return { title: '来申面智能小助手抽取专属补给品' }
     }
-  }
 
-  // 微信分享菜单
+    return (async () => {
+      setSharing(true)
+      try {
+        const result = await shareItem(item.id)
+        shareTokenRef.current = result.token
+        return {
+          title: `我在申面智能小助手收集了${item.name}`,
+          path: `/subpkg-supply/pages/draw/index?shareToken=${result.token}&category=${category}`,
+        }
+      } catch (err) {
+        Taro.showToast({
+          title: err instanceof Error ? err.message : '分享失败',
+          icon: 'none',
+        })
+        return {
+          title: `来申面智能小助手抽取${THEME_META[category].label}`,
+          path: `/subpkg-supply/pages/draw/index?category=${category}`,
+        }
+      } finally {
+        setSharing(false)
+      }
+    })()
+  })
 
   const getCardImage = (item: CollectionItem) => getCollectionImageUrl(item.imageUrl)
 
@@ -129,16 +130,6 @@ export default function CollectionDetail() {
     return (
       <View className='collection-detail-page'>
         <Text className='loading-text'>加载中...</Text>
-      </View>
-    )
-  }
-
-  if (error) {
-    return (
-      <View className='collection-detail-page'>
-        <Text className='loading-text' style={{ color: 'red' }}>加载错误: {error}</Text>
-        <Text className='loading-text' style={{ fontSize: 12 }}>ID: {id}, Category: {category}</Text>
-        <Button className='retry-btn' onClick={() => fetchDetail()}>重试</Button>
       </View>
     )
   }
@@ -187,8 +178,11 @@ export default function CollectionDetail() {
           >
             {item.isEquipped ? '取消首页展示' : theme.equipLabel}
           </Button>
-          <Button className='share-btn' onClick={handleShare} disabled={sharing}>
-            {sharing ? '分享中...' : '分享给朋友'}
+          <Button
+            className='share-btn'
+            openType='share'
+          >
+            {sharing ? '准备分享...' : '分享给朋友，送好友免费抽'}
           </Button>
         </>
       )}
