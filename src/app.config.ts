@@ -46,7 +46,7 @@ export default defineAppConfig({
       pages: [
         'pages/draw/index',
         'pages/collection/index',
-        'pages/collection/detail',
+        'pages/collection/detail/index',
       ],
     },
     {

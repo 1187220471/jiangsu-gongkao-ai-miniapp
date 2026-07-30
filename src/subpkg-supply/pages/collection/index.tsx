@@ -1,8 +1,9 @@
 import { View, Text, Image, ScrollView } from '@tarojs/components'
-import Taro from '@tarojs/taro'
+import Taro, { useRouter } from '@tarojs/taro'
 import { useState, useEffect } from 'react'
-import { request } from '@/utils/request'
-import { getPetImageUrl } from '@/utils/petAssets'
+import { fetchCollection } from '@/utils/supply'
+import { getCollectionImageUrl } from '@/utils/collectionAssets'
+import { THEME_META, type SupplyCategory } from '@/utils/theme'
 import './index.scss'
 
 interface CollectionItem {
@@ -10,15 +11,10 @@ interface CollectionItem {
   name: string
   rarity: string
   imageUrl: string
+  category: string
   collected: boolean
   isEquipped: boolean
   obtainedAt: string | null
-}
-
-interface CollectionResponse {
-  items: CollectionItem[]
-  total: number
-  collected: number
 }
 
 const RARITY_LABELS: Record<string, string> = {
@@ -26,26 +22,30 @@ const RARITY_LABELS: Record<string, string> = {
   rare: '稀有',
 }
 
-const RARITY_COLORS: Record<string, string> = {
-  common: '#6b7280',
-  rare: '#3b82f6',
-}
-
 export default function CollectionList() {
+  const router = useRouter()
+  const initialCategory = (router.params.category as SupplyCategory) || 'pixelPet'
+  const [category, setCategory] = useState<SupplyCategory>(initialCategory)
   const [items, setItems] = useState<CollectionItem[]>([])
   const [stats, setStats] = useState({ total: 0, collected: 0 })
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetchCollection()
-  }, [])
+    fetchCollectionData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [category])
 
-  const fetchCollection = async () => {
+  const fetchCollectionData = async () => {
     setLoading(true)
     try {
-      const data = await request<CollectionResponse>({ url: '/api/supply/collection' })
-      setItems(data.items)
-      setStats({ total: data.total, collected: data.collected })
+      const data = await fetchCollection(category)
+      // 兜底客户端过滤：API 可能返回跨主题数据（旧版部署），按 category 字段二次过滤
+      const filtered = (data.items as CollectionItem[]).filter((item) => {
+        if (!item.category) return category === 'pixelPet' // 老数据无 category 按 pixelPet 处理
+        return item.category === category
+      })
+      setItems(filtered)
+      setStats({ total: filtered.length, collected: filtered.filter((i) => i.collected).length })
     } catch (err) {
       Taro.showToast({
         title: err instanceof Error ? err.message : '加载失败',
@@ -56,13 +56,22 @@ export default function CollectionList() {
     }
   }
 
-  const getPetImage = (item: CollectionItem) => getPetImageUrl(item.imageUrl)
+  const getCardImage = (item: CollectionItem) => getCollectionImageUrl(item.imageUrl)
 
   const goToDetail = (item: CollectionItem) => {
     if (item.collected) {
-      Taro.navigateTo({ url: `/subpkg-supply/pages/collection/detail?id=${item.id}` })
+      Taro.navigateTo({ url: `/subpkg-supply/pages/collection/detail/index?id=${item.id}&category=${category}` })
     }
   }
+
+  const switchTheme = (c: SupplyCategory) => {
+    if (c === category) return
+    setCategory(c)
+  }
+
+  const theme = THEME_META[category]
+  const rareColor = theme.rareColor
+  const commonColor = '#6b7280'
 
   if (loading) {
     return (
@@ -74,8 +83,22 @@ export default function CollectionList() {
 
   return (
     <ScrollView className='collection-page' scrollY>
+      {/* 主题切换 Tab */}
+      <View className='theme-tabs'>
+        {(['pixelPet', 'nbaStar'] as SupplyCategory[]).map((c) => (
+          <View
+            key={c}
+            className={`theme-tab ${category === c ? 'active' : ''}`}
+            onClick={() => switchTheme(c)}
+          >
+            <Text>{THEME_META[c].icon}</Text>
+            <Text className='theme-tab-label'>{THEME_META[c].label}</Text>
+          </View>
+        ))}
+      </View>
+
       <View className='collection-header'>
-        <Text className='collection-title'>我的图鉴</Text>
+        <Text className='collection-title'>{theme.collectionTitle}</Text>
         <Text className='collection-progress'>
           {stats.collected}/{stats.total}
         </Text>
@@ -104,7 +127,7 @@ export default function CollectionList() {
             {item.collected ? (
               <Image
                 className='collection-img'
-                src={getPetImage(item)}
+                src={getCardImage(item)}
                 mode='aspectFit'
               />
             ) : (
@@ -117,7 +140,7 @@ export default function CollectionList() {
 
             <Text
               className='collection-rarity'
-              style={{ color: item.collected ? RARITY_COLORS[item.rarity] : '#d1d5db' }}
+              style={{ color: item.collected ? (item.rarity === 'rare' ? rareColor : commonColor) : '#d1d5db' }}
             >
               {item.collected ? RARITY_LABELS[item.rarity] : '???'}
             </Text>
