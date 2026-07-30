@@ -113,35 +113,7 @@ export default function CollectionDetail() {
     }
   }
 
-  // 微信分享配置
-  useEffect(() => {
-    Taro.showShareMenu({
-      withShareTicket: true,
-      menus: ['shareAppMessage', 'shareTimeline'],
-    })
-  }, [])
-
-  // 监听分享事件
-  const onShareAppMessage = () => {
-    if (!item) return {}
-
-    return {
-      title: `我获得了 ${item.name}，分享给你！`,
-      path: `/pages/index/index?source=share&itemId=${item.id}`,
-      imageUrl: getCollectionImageUrl(item.imageUrl),
-    }
-  }
-
-  // 分享到朋友圈
-  const onShareTimeline = () => {
-    if (!item) return {}
-
-    return {
-      title: `我获得了 ${item.name}，分享给你！`,
-      query: `source=share&itemId=${item.id}`,
-      imageUrl: getCollectionImageUrl(item.imageUrl),
-    }
-  }
+  // 微信分享菜单
 
   const getCardImage = (item: CollectionItem) => getCollectionImageUrl(item.imageUrl)
 
