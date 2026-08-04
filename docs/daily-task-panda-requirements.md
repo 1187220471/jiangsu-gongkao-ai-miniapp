@@ -103,7 +103,7 @@
 首页加载时：
 
 1. 读取 `daily_task_date`。
-2. 若不等于今天：重置 `daily_task_count = 0`，更新 `daily_task_date` 为今天。`daily_task_target` 保持不变。
+2. 若不等于当前日期：重置 `daily_task_count = 0`，更新 `daily_task_date` 为当前日期。`daily_task_target` 保持不变。
 3. 读取 `daily_task_target`，若无则默认 3。
 
 ### 5.3 完成任务逻辑

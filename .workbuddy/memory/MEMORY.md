@@ -8,7 +8,7 @@ _小程序端（Taro + 微信）的技术细节、踩坑记录、开发进度。
 
 - **名称**：申面智能小助手（备案已通过）
 - **路径**：`/Users/yier/Documents/daijinli网页版/daijinli-miniapp/`
-- **框架**：Taro 3.x + React 18 + TypeScript + Sass
+- **框架**：Taro 4.2.0 + React 18 + TypeScript + Sass
 - **编译目标**：微信小程序
 - **后端**：复用 Web 端 Next.js API（`https://www.mianshidati.xyz`）
 
@@ -16,7 +16,7 @@ _小程序端（Taro + 微信）的技术细节、踩坑记录、开发进度。
 
 ## 当前迭代
 
-**目标**：等待上传代码提交审核
+**目标**：等待微信审核结果；审核通过后验证方案 A 的真实分享闭环
 **已完成**：
 - Taro 初始化 + 5 个 Tab 页面（首页/面试/申论/要闻/我的）+ 5 个分包（practice/zhenti/shenlun/history/supply/focus）
 - 微信登录（`/api/auth/wechat-login`） + 绑号制（Web 主账号 + 微信扫码绑定）
@@ -28,6 +28,8 @@ _小程序端（Taro + 微信）的技术细节、踩坑记录、开发进度。
 - **2026-07-20**：补给站抽卡集卡 Phase 1 上线（学习点货币、16 像素萌宠图鉴、白底抽卡机页、4 个答题点接入 earnPoints）；稀有度定版 2 档；免费抽改服务端判定；双仓库已推送
 - **2026-07-21**：补给站 Phase 2（首页 mascot 装备选择器 + 稀有 shimmer 动效）；Phase 3 专注功能（30/60 分钟番茄钟 +2/+4 学习点，切后台超 5 分钟弹提示「继续/放弃」）；首页新增专注台入口卡片
 - **2026-07-22**：修复专注倒计时页面垂直居中（移除 `.focusing-phase` 多余 padding-top）；修复图鉴仓鼠素材偏左（Pillow 重算质心后居中裁剪，其余 15 张宠物正常）；双仓库已推送
+- **2026-07-23**：记忆文件同步，移除非技术文档中的旧产品别名；小程序端代码无改动
+- **2026-07-30**：完成分享裂变方案 A：图鉴详情页使用微信原生分享，服务端生成 72 小时一次性 token，每日最多 10 次；好友获得独立免费抽，完成抽奖后分享者 +1 学习点。Web 提交 `0f92814`，小程序提交 `113d132`；小程序已上传审核，真实分享闭环待审核通过后验证。
 
 ---
 
@@ -118,7 +120,7 @@ subpkg-supply/      ← 补给站（抽卡机/图鉴/详情）
 
 ### 补给站（抽卡集卡）
 - 货币「学习点」：答题单题/真题/申论 +1、套题 +3、签到 +1；抽奖 3 点/次，每日 1 次免费
-- 后端 API：`/api/supply/{balance,earn,draw,collection,collection/equip}`；逻辑库 `daijinli-web/src/lib/supply.ts`
+- 后端 API：`/api/supply/{balance,earn,draw,collection,equip,share,share/claim}`；分享抽使用 `source: 'share'` + `shareToken`；逻辑库 `daijinli-web/src/lib/supply.ts`
 - 16 萌宠素材：`src/assets/collection/pet-*.png`（120×120 透明底），`utils/petAssets.ts` 映射 imageUrl → 本地资源
 - 抽卡机页（`subpkg-supply/pages/draw/`）：白底机身 + 三滚筒错停（1.0/1.3/1.6s）+ 可点拉杆；滚动用 `setInterval` 100ms 切图
 - 免费抽：服务端判定（PointsLog 今日 `free:` 记录），页面 catch 到「免费已用完」自动同步状态（错误自愈）

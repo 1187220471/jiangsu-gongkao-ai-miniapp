@@ -1,5 +1,5 @@
-import { View, Text, Button, Image } from '@tarojs/components'
-import Taro from '@tarojs/taro'
+import { View, Text, Button, Image, Picker } from '@tarojs/components'
+import Taro, { useDidShow } from '@tarojs/taro'
 import { useState, useEffect, createContext, useContext } from 'react'
 import './index.scss'
 import iconMicrophone from '../../assets/icons/microphone.png'
@@ -16,6 +16,16 @@ import { request } from '../../utils/request'
 import { getCollectionImageUrl } from '../../utils/collectionAssets'
 import { THEME_META, type SupplyCategory } from '../../utils/theme'
 import { fetchTodayFocus } from '../../utils/focus'
+import {
+  DEFAULT_EXAMS,
+  formatExamDate,
+  getBeijingDateString,
+  getCustomExam,
+  getExamCountdown,
+  saveCustomExam,
+  clearCustomExam,
+  type ExamItem,
+} from '../../utils/examCountdown'
 
 // 全局登录状态
 interface AuthContextType {
@@ -64,6 +74,10 @@ export default function Index() {
   const [pickerLoading, setPickerLoading] = useState(false)
   const [todayFocusMinutes, setTodayFocusMinutes] = useState(0)
   const [lastTheme, setLastTheme] = useState<SupplyCategory>('pixelPet')
+  const [customExam, setCustomExam] = useState<ExamItem | null>(null)
+  const [showExamPicker, setShowExamPicker] = useState(false)
+  const [draftExamDate, setDraftExamDate] = useState('')
+  const [examNow, setExamNow] = useState(() => new Date())
 
   // 检查本地登录状态 + 每日任务
   useEffect(() => {
@@ -79,6 +93,10 @@ export default function Index() {
 
     const savedTheme = (Taro.getStorageSync('lastSupplyTheme') as SupplyCategory) || 'pixelPet'
     setLastTheme(savedTheme)
+
+    const savedExam = getCustomExam()
+    setCustomExam(savedExam)
+    setDraftExamDate(savedExam?.date || getBeijingDateString())
 
     // 获取学习点余额和已装备伙伴
     if (storedToken) {
@@ -102,9 +120,19 @@ export default function Index() {
     }
   }, [])
 
+  useDidShow(() => {
+    setExamNow(new Date())
+  })
+
+  useEffect(() => {
+    const timer = setInterval(() => setExamNow(new Date()), 60 * 1000)
+    return () => clearInterval(timer)
+  }, [])
+
   // 根据完成比例切换 mascot（0-32% 阅读 / 33-65% 写作 / 66%+ 点赞）
   const stage = getMascotStage(dailyTask.progress)
   const pandaMascot = stage === 2 ? pandaThumbsup : stage === 1 ? pandaWriting : pandaReading
+  const displayedExams = customExam ? [customExam] : DEFAULT_EXAMS
 
   const login = (newToken: string, newUser: any) => {
     Taro.setStorageSync('token', newToken)
@@ -226,6 +254,30 @@ export default function Index() {
     const state = setDailyTaskTarget(n)
     setDailyTask(state)
     setShowTargetPicker(false)
+  }
+
+  const handleOpenExamPicker = () => {
+    setDraftExamDate(customExam?.date || getBeijingDateString())
+    setShowExamPicker(true)
+  }
+
+  const handleSaveExam = () => {
+    const exam = saveCustomExam(draftExamDate)
+    if (!exam) {
+      Taro.showToast({ title: '请选择有效日期', icon: 'none' })
+      return
+    }
+    setCustomExam(exam)
+    setShowExamPicker(false)
+    Taro.showToast({ title: '考试日期已保存', icon: 'none' })
+  }
+
+  const handleResetExam = () => {
+    clearCustomExam()
+    setCustomExam(null)
+    setDraftExamDate(getBeijingDateString())
+    setShowExamPicker(false)
+    Taro.showToast({ title: '已恢复默认考试', icon: 'none' })
   }
 
   const modules = [
@@ -351,6 +403,33 @@ export default function Index() {
           </Button>
         </View>
 
+        {/* 考试倒计时 */}
+        <View className='exam-countdown-card'>
+          <View className='exam-countdown-header'>
+            <View>
+              <Text className='exam-countdown-title'>考试倒计时</Text>
+              <Text className='exam-countdown-subtitle'>按北京时间自然日计算</Text>
+            </View>
+            <Text className='exam-countdown-setting' onClick={handleOpenExamPicker}>设置</Text>
+          </View>
+          <View className='exam-countdown-list'>
+            {displayedExams.map((exam) => {
+              const countdown = getExamCountdown(exam, examNow)
+              return (
+                <View key={exam.id} className='exam-countdown-item' onClick={handleOpenExamPicker}>
+                  <View className='exam-countdown-info'>
+                    <Text className='exam-countdown-name'>{exam.name}</Text>
+                    <Text className='exam-countdown-date'>{formatExamDate(exam.date)}</Text>
+                  </View>
+                  <Text className={`exam-countdown-value exam-countdown-${countdown.status}`}>
+                    {countdown.displayText}
+                  </Text>
+                </View>
+              )
+            })}
+          </View>
+        </View>
+
         {/* 补给站入口 */}
         <View className='supply-entry' onClick={handleGoSupply}>
           <View className='supply-entry-left'>
@@ -456,6 +535,33 @@ export default function Index() {
                 ))}
               </View>
               <Text className='target-picker-hint'>预设次数，点击即生效</Text>
+            </View>
+          </View>
+        )}
+
+        {/* 考试日期设置弹层 */}
+        {showExamPicker && (
+          <View className='exam-picker-overlay' onClick={() => setShowExamPicker(false)}>
+            <View className='exam-picker' onClick={(e) => e.stopPropagation()}>
+              <View className='exam-picker-header'>
+                <Text className='exam-picker-title'>设置考试日期</Text>
+                <Text className='exam-picker-close' onClick={() => setShowExamPicker(false)}>✕</Text>
+              </View>
+              <Text className='exam-picker-hint'>设置后将显示“我的考试”，替换默认考试日期</Text>
+              <Picker
+                mode='date'
+                value={draftExamDate}
+                onChange={(e) => setDraftExamDate(e.detail.value)}
+              >
+                <View className='exam-picker-date-trigger'>
+                  <Text className='exam-picker-date-label'>考试日期</Text>
+                  <Text className='exam-picker-date-value'>{formatExamDate(draftExamDate)}</Text>
+                </View>
+              </Picker>
+              <View className='exam-picker-actions'>
+                <Button className='exam-picker-reset' onClick={handleResetExam}>恢复默认</Button>
+                <Button className='exam-picker-save' onClick={handleSaveExam}>保存设置</Button>
+              </View>
             </View>
           </View>
         )}

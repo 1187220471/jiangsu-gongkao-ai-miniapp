@@ -210,6 +210,99 @@
   line-height: 1;
 }
 
+/* 考试倒计时 */
+.exam-countdown-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+}
+
+.exam-countdown-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.exam-countdown-title {
+  display: block;
+  color: #111827;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.exam-countdown-subtitle {
+  display: block;
+  color: #9ca3af;
+  font-size: 11px;
+  margin-top: 4px;
+}
+
+.exam-countdown-setting {
+  color: #3b82f6;
+  font-size: 13px;
+  padding: 6px 2px;
+}
+
+.exam-countdown-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.exam-countdown-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: #f9fafb;
+  border-radius: 12px;
+  padding: 12px;
+
+  &:active {
+    opacity: 0.8;
+  }
+}
+
+.exam-countdown-info {
+  min-width: 0;
+}
+
+.exam-countdown-name,
+.exam-countdown-date {
+  display: block;
+}
+
+.exam-countdown-name {
+  color: #111827;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.exam-countdown-date {
+  color: #9ca3af;
+  font-size: 11px;
+  margin-top: 4px;
+}
+
+.exam-countdown-value {
+  flex-shrink: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: #2563eb;
+}
+
+.exam-countdown-today {
+  color: #dc2626;
+}
+
+.exam-countdown-expired,
+.exam-countdown-invalid {
+  color: #9ca3af;
+}
+
 /* 补给站入口 */
 .supply-entry {
   background: #ffffff;
@@ -496,6 +589,100 @@
   display: block;
   margin-top: 14px;
   text-align: center;
+}
+
+/* 考试日期设置弹层 */
+.exam-picker-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1000;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.exam-picker {
+  width: 100%;
+  background: #ffffff;
+  border-radius: 20px 20px 0 0;
+  padding: 24px 20px 32px;
+}
+
+.exam-picker-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.exam-picker-title {
+  color: #111827;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.exam-picker-close {
+  color: #9ca3af;
+  font-size: 18px;
+  padding: 4px;
+}
+
+.exam-picker-hint {
+  display: block;
+  color: #9ca3af;
+  font-size: 12px;
+  margin-bottom: 18px;
+}
+
+.exam-picker-date-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f3f4f6;
+  border-radius: 12px;
+  padding: 14px;
+}
+
+.exam-picker-date-label {
+  color: #374151;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.exam-picker-date-value {
+  color: #2563eb;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.exam-picker-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.exam-picker-actions Button {
+  flex: 1;
+  margin: 0;
+  border: none;
+  border-radius: 12px;
+  font-size: 14px;
+  line-height: 1;
+  padding: 13px 0;
+}
+
+.exam-picker-reset {
+  background: #f3f4f6;
+  color: #4b5563;
+}
+
+.exam-picker-save {
+  background: #111827;
+  color: #ffffff;
 }
 
 /* 萌宠装备选择器弹层 */
