@@ -3,14 +3,15 @@ import Taro from '@tarojs/taro'
 import { useState } from 'react'
 import './index.scss'
 
+// 题型与 Web 端对齐（id 需与 /api/questions/generate 的 typeMap 一致）
 const questionTypes = [
-  { id: 'comprehensive', name: '综合分析', desc: '社会现象、态度观点', color: '#3b82f6', icon: '🔍' },
-  { id: 'planning', name: '组织管理', desc: '活动策划、方案执行', color: '#10b981', icon: '📋' },
-  { id: 'emergency', name: '应急应变', desc: '突发事件、危机处理', color: '#f59e0b', icon: '🚨' },
-  { id: 'interpersonal', name: '人际关系', desc: '同事矛盾、沟通协调', color: '#8b5cf6', icon: '🤝' },
-  { id: 'self', name: '自我认知', desc: '个人经历、职业规划', color: '#ec4899', icon: '👤' },
-  { id: 'simulation', name: '情景模拟', desc: '角色扮演、现场模拟', color: '#06b6d4', icon: '🎭' },
-  { id: 'material', name: '材料题', desc: '阅读材料、提炼观点', color: '#64748b', icon: '📄' },
+  { id: 'social', name: '社会现象类', desc: '政策落地、民生热点', color: '#3b82f6', icon: '🔍' },
+  { id: 'attitude', name: '态度观点类', desc: '名言观点、政策理解', color: '#2563eb', icon: '💭' },
+  { id: 'organize', name: '组织管理类', desc: '活动策划、方案执行', color: '#10b981', icon: '📋' },
+  { id: 'emergency', name: '应急应变类', desc: '突发事件、危机处理', color: '#f59e0b', icon: '🚨' },
+  { id: 'relationship', name: '人际关系类', desc: '同事矛盾、沟通协调', color: '#8b5cf6', icon: '🤝' },
+  { id: 'self', name: '自我认知类', desc: '个人经历、职业规划', color: '#ec4899', icon: '👤' },
+  { id: 'situational', name: '情景模拟类', desc: '角色扮演、现场模拟', color: '#06b6d4', icon: '🎭' },
 ]
 
 export default function ModeSelect() {
