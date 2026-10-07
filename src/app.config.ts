@@ -75,10 +75,6 @@ export default defineAppConfig({
         text: '申论',
       },
       {
-        pagePath: 'pages/news/news',
-        text: '要闻',
-      },
-      {
         pagePath: 'pages/profile/profile',
         text: '我的',
       },

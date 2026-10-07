@@ -460,3 +460,34 @@
   color: #4b5563;
   line-height: 1.6;
 }
+
+/* 视图切换：要闻 | 素材 */
+.view-switch {
+  display: flex;
+  background: white;
+  padding: 10px 16px;
+  gap: 8px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.view-switch-item {
+  flex: 1;
+  padding: 7px 0;
+  border-radius: 8px;
+  background: #f1f5f9;
+  text-align: center;
+}
+
+.view-switch-item.active {
+  background: #1e293b;
+}
+
+.view-switch-text {
+  font-size: 13px;
+  color: #64748b;
+}
+
+.view-switch-item.active .view-switch-text {
+  color: white;
+  font-weight: bold;
+}

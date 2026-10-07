@@ -10,6 +10,7 @@ import pandaReading from '../../assets/images/panda-reading-120.png'
 import pandaWriting from '../../assets/images/panda-writing-120.png'
 import pandaThumbsup from '../../assets/images/panda-thumbsup-120.png'
 import { getDailyTask, getTaskHint, getMascotStage, setDailyTaskTarget } from '../../utils/dailyTask'
+import { SHOW_MATERIALS, SHOW_NEWS } from '../../utils/features'
 import type { DailyTaskState } from '../../utils/dailyTask'
 import { fetchSupplyBalance, fetchAllCollection } from '../../utils/supply'
 import { request } from '../../utils/request'
@@ -203,6 +204,11 @@ export default function Index() {
     Taro.navigateTo({ url: '/subpkg-focus/pages/timer/index' })
   }
 
+  const handleGoMaterials = () => {
+    Taro.setStorageSync('newsDefaultView', 'material')
+    Taro.switchTab({ url: '/pages/news/news' })
+  }
+
   const fetchCollection = async () => {
     try {
       const data = await fetchAllCollection()
@@ -299,15 +305,33 @@ export default function Index() {
       route: '/pages/shenlun/shenlun',
       isTab: true,
     },
-    {
-      title: '每日政务要闻',
-      icon: iconNewspaper,
-      color: '#f8f4ee',
-      textColor: '#555048',
-      stats: '每日更新',
-      route: '/pages/news/news',
-      isTab: true,
-    },
+    ...(SHOW_NEWS
+      ? [
+          {
+            title: '每日政务要闻',
+            icon: iconNewspaper,
+            color: '#f8f4ee',
+            textColor: '#555048',
+            stats: '每日更新',
+            route: '/pages/news/news',
+            isTab: true,
+          },
+        ]
+      : []),
+    ...(SHOW_MATERIALS
+      ? [
+          {
+            title: '每周素材积累',
+            icon: iconNewspaper,
+            color: '#eef6f8',
+            textColor: '#4a5560',
+            stats: '每周更新',
+            route: '/pages/news/news',
+            isTab: true,
+            view: 'material',
+          },
+        ]
+      : []),
     {
       title: '练习记录',
       icon: iconClock,
@@ -471,6 +495,23 @@ export default function Index() {
           </View>
         </View>
 
+        {/* 每周素材积累入口 */}
+        {SHOW_MATERIALS && (
+          <View className='supply-entry' onClick={handleGoMaterials}>
+            <View className='supply-entry-left'>
+              <Text className='supply-entry-icon'>📚</Text>
+              <View className='supply-entry-info'>
+                <Text className='supply-entry-title'>每周素材积累</Text>
+                <Text className='supply-entry-subtitle'>时评精选 · 论点结构 · 金句摘录</Text>
+              </View>
+            </View>
+            <View className='supply-entry-right'>
+              <Text className='supply-entry-points'>每周更新</Text>
+              <Text className='supply-entry-arrow'>→</Text>
+            </View>
+          </View>
+        )}
+
         {/* 训练模块 */}
         <View className='section'>
           <Text className='section-title'>训练模块</Text>
@@ -479,7 +520,12 @@ export default function Index() {
               <View
                 key={module.route}
                 className='module-card'
-                onClick={() => handleNavigate(module.route, module.isTab)}
+                onClick={() => {
+                  if (module.view) {
+                    Taro.setStorageSync('newsDefaultView', module.view)
+                  }
+                  handleNavigate(module.route, module.isTab)
+                }}
               >
                 <View className='module-card-main'>
                   <View className='module-icon' style={{ background: module.color }}>

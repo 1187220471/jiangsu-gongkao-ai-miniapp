@@ -1,6 +1,8 @@
 import Taro from '@tarojs/taro'
 import { View, Text, ScrollView, Picker } from '@tarojs/components'
 import { useState, useEffect } from 'react'
+import MaterialsView from '../../components/MaterialsView'
+import { SHOW_MATERIALS } from '../../utils/features'
 import './news.scss'
 
 interface NewsItem {
@@ -86,6 +88,15 @@ export default function News() {
   const [selectedDate, setSelectedDate] = useState('')
   const [showAllNews, setShowAllNews] = useState(false)
   const [showPicker, setShowPicker] = useState(false)
+  const [view, setView] = useState<'news' | 'material'>(() => {
+    if (!SHOW_MATERIALS) return 'news'
+    const saved = Taro.getStorageSync('newsDefaultView')
+    if (saved === 'material') {
+      Taro.removeStorageSync('newsDefaultView')
+      return 'material'
+    }
+    return 'news'
+  })
 
   useEffect(() => {
     const today = getBeijingDateStr(new Date())
@@ -180,6 +191,21 @@ export default function News() {
 
   return (
     <View className='news-page'>
+      {/* 视图切换：要闻 | 素材 */}
+      {SHOW_MATERIALS && (
+        <View className='view-switch'>
+          <View className={`view-switch-item ${view === 'news' ? 'active' : ''}`} onClick={() => setView('news')}>
+            <Text className='view-switch-text'>要闻</Text>
+          </View>
+          <View className={`view-switch-item ${view === 'material' ? 'active' : ''}`} onClick={() => setView('material')}>
+            <Text className='view-switch-text'>素材</Text>
+          </View>
+        </View>
+      )}
+      {SHOW_MATERIALS && view === 'material' ? (
+        <MaterialsView />
+      ) : (
+        <>
       {/* 顶部日期选择器 */}
       <View className='news-header'>
         <View className='date-nav'>
@@ -378,6 +404,8 @@ export default function News() {
           </>
         )}
       </ScrollView>
+        </>
+      )}
     </View>
   )
 }

@@ -1,0 +1,241 @@
+.mv-wrap {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.mv-status {
+  padding: 100px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.mv-status-text {
+  font-size: 14px;
+  color: #94a3b8;
+  text-align: center;
+}
+
+.mv-retry {
+  font-size: 14px;
+  color: #3b82f6;
+  padding: 8px 24px;
+  border: 1px solid #3b82f6;
+  border-radius: 8px;
+}
+
+/* 周期信息 */
+.mv-header {
+  padding: 12px 16px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.mv-header-title {
+  font-size: 15px;
+  font-weight: bold;
+  color: #1e293b;
+}
+
+.mv-header-sub {
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+/* 主题筛选 */
+.mv-topic-scroll {
+  padding: 0 12px 10px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.mv-topic-chips {
+  display: inline-flex;
+  gap: 8px;
+}
+
+.mv-topic-chip {
+  display: inline-block;
+  padding: 5px 14px;
+  border-radius: 14px;
+  background: #f1f5f9;
+  border: 1px solid #f1f5f9;
+}
+
+.mv-topic-chip.active {
+  background: #1e293b;
+  border-color: #1e293b;
+}
+
+.mv-topic-chip-text {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.mv-topic-chip.active .mv-topic-chip-text {
+  color: white;
+}
+
+/* 列表 */
+.mv-list {
+  flex: 1;
+  padding: 0 12px 24px;
+  box-sizing: border-box;
+}
+
+.mv-card {
+  background: white;
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 12px;
+  border: 1px solid #f1f5f9;
+}
+
+.mv-card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.mv-card-title {
+  flex: 1;
+  font-size: 15px;
+  font-weight: bold;
+  color: #1e293b;
+  line-height: 1.4;
+}
+
+.mv-card-topic {
+  flex-shrink: 0;
+  padding: 2px 8px;
+  border-radius: 4px;
+  border: 1px solid;
+}
+
+.mv-card-topic-text {
+  font-size: 11px;
+}
+
+.mv-card-meta {
+  margin-bottom: 10px;
+}
+
+.mv-meta-text {
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+/* 内容块通用 */
+.mv-block {
+  border-radius: 0 8px 8px 0;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+}
+
+.mv-block-label {
+  display: block;
+  font-size: 11px;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.mv-block-text {
+  font-size: 13px;
+  color: #334155;
+  line-height: 1.6;
+}
+
+/* 论点结构 */
+.mv-thesis {
+  background: rgba(245, 158, 11, 0.08);
+  border-left: 3px solid #fbbf24;
+}
+
+.mv-thesis-label {
+  color: #b45309;
+}
+
+.mv-thesis-line {
+  margin-bottom: 4px;
+}
+
+.mv-thesis-tag {
+  font-size: 13px;
+  color: #b45309;
+  font-weight: bold;
+}
+
+/* 金句 */
+.mv-quotes {
+  background: rgba(59, 130, 246, 0.06);
+  border-left: 3px solid #93c5fd;
+}
+
+.mv-quotes-label {
+  color: #1d4ed8;
+}
+
+.mv-quote-line {
+  display: block;
+  font-size: 13px;
+  color: #334155;
+  line-height: 1.6;
+  margin-bottom: 4px;
+}
+
+/* 全文摘录 */
+.mv-content {
+  margin-bottom: 10px;
+}
+
+.mv-content-toggle {
+  font-size: 12px;
+  color: #3b82f6;
+}
+
+.mv-content-body {
+  margin-top: 8px;
+  padding-top: 10px;
+  border-top: 1px solid #f8fafc;
+}
+
+.mv-content-para {
+  display: block;
+  font-size: 13px;
+  color: #475569;
+  line-height: 1.9;
+  text-indent: 2em;
+  margin-bottom: 10px;
+}
+
+.mv-content-para:last-child {
+  margin-bottom: 0;
+}
+
+/* AI 点评 */
+.mv-analysis {
+  background: #f8fafc;
+  border-radius: 8px;
+  border-left: none;
+}
+
+.mv-analysis-label {
+  color: #64748b;
+}
+
+/* 页脚 */
+.mv-footer {
+  padding: 16px 16px 10px;
+}
+
+.mv-footer-text {
+  font-size: 10px;
+  color: #cbd5e1;
+  text-align: center;
+  line-height: 1.6;
+}
