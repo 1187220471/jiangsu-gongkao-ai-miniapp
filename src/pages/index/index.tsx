@@ -209,6 +209,16 @@ export default function Index() {
     Taro.switchTab({ url: '/pages/news/news' })
   }
 
+  // 内容板块（要闻/素材）在小程序端隐藏时，引导用户复制网页版网址
+  const handleCopyWeb = () => {
+    Taro.setClipboardData({
+      data: 'https://mianshidati.xyz',
+      success: () => {
+        Taro.showToast({ title: '网页版网址已复制', icon: 'none' })
+      },
+    })
+  }
+
   const fetchCollection = async () => {
     try {
       const data = await fetchAllCollection()
@@ -541,6 +551,13 @@ export default function Index() {
               </View>
             ))}
           </View>
+          {(!SHOW_NEWS || !SHOW_MATERIALS) && (
+            <View className='web-hint' onClick={handleCopyWeb}>
+              <Text className='web-hint-text'>
+                每日政务新闻更新和文章素材积累模块，可至网页端查看（点击复制网址）
+              </Text>
+            </View>
+          )}
         </View>
 
         {/* 数据概览 */}
