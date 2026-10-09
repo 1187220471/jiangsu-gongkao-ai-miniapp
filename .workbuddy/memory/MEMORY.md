@@ -75,6 +75,11 @@ _小程序端（Taro + 微信）的技术细节、踩坑记录、开发进度。
 | Git 协议 | **SSH** | 解决本机 HTTPS 频繁超时 |
 | 补给站稀有度 | 2 档：12 普通 + 4 稀有，付费抽 80/20 | 用户要求简化（原 4 档太多） |
 | 免费抽状态 | 服务端判定（balance 接口返回 `freeDrawUsedToday`），禁用本地 storage | 本地 storage 有 UTC 时区偏差 + 多端不同步 |
+| 补给站双主题 | **独立主题池**（pixelPet / nbaStar）：各自抽取、各自图鉴；**学习点与免费抽跨主题共享**；**装备全局唯一**；免费抽固定出 common | 用户选定方案 B，两主题互不干扰 |
+| NBA 球星卡稀有度 | 库里 / 杜兰特 / 詹姆斯 = rare，其余 9 人 = common | 按知名度分配 |
+| 集齐奖励 / 称号 | **不做**：取消「集齐 16 只 +30 学习点」与称号持久化 | 用户要求简化 |
+| 专注切后台策略 | 回前台超 5 分钟弹「继续 / 放弃」（**不自动放弃、不暂停倒计时**）；不做白噪音 / 闹钟提醒 / 跨专注恢复 | 用户选定 |
+| 不做的事（通用） | 不做「关于/个人化服务说明」页、不做独立专注统计页（今日累计在首页入口卡片展示） | 用户要求极简 |
 
 ---
 
@@ -124,10 +129,15 @@ subpkg-supply/      ← 补给站（抽卡机/图鉴/详情）
 - 容器：56×56 圆角 14px，背景为对应浅色
 
 ### 补给站（抽卡集卡）
-- 货币「学习点」：答题单题/真题/申论 +1、套题 +3、签到 +1；抽奖 3 点/次，每日 1 次免费
+- 货币「学习点」获取：单题/真题/申论 +1、套题 +3、专注 30/60 分钟 +2/+4、签到 +1、分享双方各 +1（每日上限 10 次）、重复抽 +2；抽奖 3 点/次（无十连抽），每日 1 次免费（固定出普通）
 - 后端 API：`/api/supply/{balance,earn,draw,collection,equip,share,share/claim}`；分享抽使用 `source: 'share'` + `shareToken`；逻辑库 `daijinli-web/src/lib/supply.ts`
 - 16 萌宠素材：`src/assets/collection/pet-*.png`（120×120 透明底），`utils/petAssets.ts` 映射 imageUrl → 本地资源
 - 抽卡机页（`subpkg-supply/pages/draw/`）：白底机身 + 三滚筒错停（1.0/1.3/1.6s）+ 可点拉杆；滚动用 `setInterval` 100ms 切图
 - 免费抽：服务端判定（PointsLog 今日 `free:` 记录），页面 catch 到「免费已用完」自动同步状态（错误自愈）
 - 图片去底脚本：`scripts/fix-*-bg.py`（采样四角背景色 → alpha 置 0 → 裁剪居中缩放）
 - `assets-concepts/`（AI 原图 31MB）已加入 .gitignore，不入库
+
+### 专注（番茄钟）
+- 后端：`FocusSession` 模型（userId/duration/status/startedAt/endedAt/pointsAwarded）；逻辑库 `daijinli-web/src/lib/focus.ts`（`endFocusSession` 服务端校验 `elapsed ≥ duration − 5s` 容差，否则标记 `cheated` 不发点）；API：`POST /api/focus/start`、`POST /api/focus/end`(action: complete|abandon)、`GET /api/focus/today`、`GET /api/focus/active`（清理遗留 active session，防「已有专注进行中」卡死）
+- 小程序：`subpkg-focus/pages/timer/`，三态机 `select → focusing → completed`
+- ⚠️ 踩坑（2026-07-21）：倒计时关键值（startedAt / duration / sessionId）**必须用 `useRef` 存**——用 `useState` 时 ticker 闭包捕获到 `null`，倒计时完全不动
